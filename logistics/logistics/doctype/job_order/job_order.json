@@ -12,12 +12,17 @@
   "company",
   "column_break_ajnv",
   "posting_date",
+  "invoice_ref_no",
+  "invoice_date",
+  "tax_invoice_ref",
+  "ref",
   "amended_from",
   "section_break_nvhm",
   "items",
   "section_break_qmdi",
   "total_qty",
   "column_break_lsvy",
+  "total_gross_wt",
   "total_value",
   "address",
   "billing_address_section",
@@ -44,13 +49,17 @@
   {
    "fieldname": "customer",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Customer",
-   "options": "Customer"
+   "options": "Customer",
+   "reqd": 1
   },
   {
    "fieldname": "company",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Company",
    "options": "Company",
    "remember_last_selected_value": 1,
@@ -64,6 +73,8 @@
    "default": "Today",
    "fieldname": "posting_date",
    "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Posting Date"
   },
   {
@@ -122,13 +133,39 @@
    "fieldtype": "Currency",
    "label": "Total Value",
    "read_only": 1
+  },
+  {
+   "fieldname": "invoice_ref_no",
+   "fieldtype": "Data",
+   "label": "Invoice Ref No"
+  },
+  {
+   "fieldname": "invoice_date",
+   "fieldtype": "Date",
+   "label": "Invoice Date"
+  },
+  {
+   "fieldname": "tax_invoice_ref",
+   "fieldtype": "Data",
+   "label": "Tax Invoice Ref"
+  },
+  {
+   "fieldname": "ref",
+   "fieldtype": "Data",
+   "label": "Ref"
+  },
+  {
+   "fieldname": "total_gross_wt",
+   "fieldtype": "Float",
+   "label": "Total Gross Wt",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-18 17:28:53.914505",
+ "modified": "2025-12-19 14:34:58.673711",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Job Order",
