@@ -5,19 +5,19 @@ frappe.ui.form.on("Job Order", {
 
     refresh(frm) {
         if (frm.doc.docstatus == 1) {
-            frm.add_custom_button(__('Sales Invoice'), function() {
+            frm.add_custom_button(__('Outbound'), function() {
                 frappe.call({
-                    method:  "logistics.logistics.doctype.job_order.job_order.make_sales_invoice",
+                    method:  "logistics.logistics.doctype.job_order.job_order.make_outbound",
                     args: {
                         order_name: frm.doc.name
                     },
                     callback: function(r) {
                         if (r.message) {
                             frappe.show_alert({
-                                message: "Sales Invoice is Created",
+                                message: "Outbound is Created",
                                 indicator: 'green'
                             }, 5);
-                            frappe.set_route('Form', 'Sales Invoice', r.message);
+                            frappe.set_route('Form', 'Outbound', r.message);
                         }
                     }
                 });
@@ -33,6 +33,28 @@ frappe.ui.form.on("Job Order", {
             );
         }
     },
+    supplier: function(frm) {
+		if (frm.doc.supplier) {
+			frappe.call({
+				method: "frappe.client.get",
+				args: {
+					doctype: "Supplier",
+					name: frm.doc.supplier
+				},
+				callback: function(r) {
+					if (r.message) {
+						let supplier = r.message;
+						if (supplier.supplier_address) {
+							frm.set_value("supplier_address", customer.supplier_address);
+						}
+					}
+				}
+			});
+		} else {
+			frm.set_value("supplier_address", "");
+			frm.set_value("supplier_address_display", "");
+		}
+	},
     customer: function(frm) {
 		if (frm.doc.customer) {
 			frappe.call({
@@ -71,6 +93,22 @@ frappe.ui.form.on("Job Order", {
 			frm.set_value("address_display", "");
 		}
 	},
+    supplier_address: function (frm) {
+		if (frm.doc.supplier) {
+			frappe.call({
+				method: "frappe.contacts.doctype.address.address.get_address_display",
+				args: {
+					address_dict: frm.doc.supplier_address,
+				},
+				callback: function (r) {
+					frm.set_value("supplier_address_display", r.message);
+				},
+			});
+        }
+		if (!frm.doc.supplier_address) {
+			frm.set_value("supplier_address_display", "");
+		}
+	},
     items_add: function(frm, cdt, cdn) {
 		calculate_totals(frm);
 	},
@@ -105,6 +143,7 @@ function calculate_item_total(frm, cdt, cdn) {
 function calculate_totals(frm) {
 	let total_qty = 0;
 	let total_value = 0;
+    let total_gross = 0;
 	
 	if (frm.doc.items && frm.doc.items.length > 0) {
 		frm.doc.items.forEach(function(item) {
