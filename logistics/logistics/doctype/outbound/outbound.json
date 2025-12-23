@@ -1,0 +1,162 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-12-22 17:35:24.050471",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_nkjy",
+  "cargo_chanel",
+  "job_type",
+  "entry_point",
+  "exit_point",
+  "column_break_jino",
+  "posting_date",
+  "ship_to",
+  "bill_to",
+  "on_behalf_of",
+  "amended_from",
+  "section_break_jzkx",
+  "payment_mode",
+  "inco_term",
+  "column_break_tdsu",
+  "clearing_agent",
+  "currency",
+  "section_break_hoqy",
+  "items"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_nkjy",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Outbound",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "cargo_chanel",
+   "fieldtype": "Select",
+   "label": "Cargo Chanel",
+   "options": "\nBy Land\nSea\nAir"
+  },
+  {
+   "fieldname": "job_type",
+   "fieldtype": "Select",
+   "label": "Job Type",
+   "options": "\nTransfer\nImport\nExport"
+  },
+  {
+   "fieldname": "entry_point",
+   "fieldtype": "Link",
+   "label": "Entry Point",
+   "options": "Country"
+  },
+  {
+   "fieldname": "exit_point",
+   "fieldtype": "Link",
+   "label": "Exit Point",
+   "options": "Country"
+  },
+  {
+   "fieldname": "column_break_jino",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ship_to",
+   "fieldtype": "Data",
+   "label": "Ship To"
+  },
+  {
+   "fieldname": "bill_to",
+   "fieldtype": "Data",
+   "label": "Bill To"
+  },
+  {
+   "fieldname": "on_behalf_of",
+   "fieldtype": "Data",
+   "label": "On Behalf of"
+  },
+  {
+   "fieldname": "section_break_jzkx",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "payment_mode",
+   "fieldtype": "Select",
+   "label": "Payment Mode",
+   "options": "\nCash\nBank"
+  },
+  {
+   "fieldname": "inco_term",
+   "fieldtype": "Data",
+   "label": "Inco Term"
+  },
+  {
+   "fieldname": "column_break_tdsu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "clearing_agent",
+   "fieldtype": "Data",
+   "label": "Clearing Agent"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "section_break_hoqy",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Outbound Item"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-12-23 10:13:18.120700",
+ "modified_by": "Administrator",
+ "module": "Logistics",
+ "name": "Outbound",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

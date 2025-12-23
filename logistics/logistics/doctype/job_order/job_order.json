@@ -8,14 +8,18 @@
  "engine": "InnoDB",
  "field_order": [
   "section_break_bz8i",
+  "cargo_chanel",
   "customer",
+  "supplier",
   "company",
   "column_break_ajnv",
   "posting_date",
-  "invoice_ref_no",
-  "invoice_date",
-  "tax_invoice_ref",
+  "job_type",
   "ref",
+  "currency",
+  "column_break_qcmd",
+  "boe_no",
+  "agent",
   "amended_from",
   "section_break_nvhm",
   "items",
@@ -28,7 +32,9 @@
   "billing_address_section",
   "customer_address",
   "address_display",
-  "column_break_bosw"
+  "column_break_bosw",
+  "supplier_address",
+  "supplier_address_display"
  ],
  "fields": [
   {
@@ -135,21 +141,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "invoice_ref_no",
-   "fieldtype": "Data",
-   "label": "Invoice Ref No"
-  },
-  {
-   "fieldname": "invoice_date",
-   "fieldtype": "Date",
-   "label": "Invoice Date"
-  },
-  {
-   "fieldname": "tax_invoice_ref",
-   "fieldtype": "Data",
-   "label": "Tax Invoice Ref"
-  },
-  {
    "fieldname": "ref",
    "fieldtype": "Data",
    "label": "Ref"
@@ -159,13 +150,65 @@
    "fieldtype": "Float",
    "label": "Total Gross Wt",
    "read_only": 1
+  },
+  {
+   "fieldname": "cargo_chanel",
+   "fieldtype": "Select",
+   "in_standard_filter": 1,
+   "label": "Cargo Chanel",
+   "options": "\nBy Land\nSea\nAir",
+   "reqd": 1
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "column_break_qcmd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "supplier_address",
+   "fieldtype": "Link",
+   "label": "Supplier Address",
+   "options": "Address"
+  },
+  {
+   "fieldname": "supplier_address_display",
+   "fieldtype": "Small Text",
+   "label": "Address",
+   "read_only": 1
+  },
+  {
+   "fieldname": "job_type",
+   "fieldtype": "Select",
+   "label": "Job Type",
+   "options": "\nTransfer\nImport\nExport"
+  },
+  {
+   "fieldname": "boe_no",
+   "fieldtype": "Data",
+   "label": "BOE NO"
+  },
+  {
+   "fieldname": "agent",
+   "fieldtype": "Data",
+   "label": "Agent"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-19 14:34:58.673711",
+ "modified": "2025-12-23 12:42:37.712427",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Job Order",
