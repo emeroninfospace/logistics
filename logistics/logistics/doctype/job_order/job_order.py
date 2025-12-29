@@ -7,6 +7,7 @@ from frappe.model.document import Document
 
 class JobOrder(Document):
 	def before_submit(self):
+		self.status = "Pending"
 		for item in self.items:
 			logistics_transaction = frappe.get_doc({
 				'doctype': 'Logistics Transaction',
@@ -14,11 +15,11 @@ class JobOrder(Document):
 				'item': item.item_code,
 				'hs_code': item.hs_code,
 				'posting_date': self.posting_date,
-				'status': 'In', 
-				'qty': item.qty,
-				'weight': item.gross_wt,
-				'value': item.total_value,
-				'reference_id': self.name
+				'in_qty': item.qty,
+				'in_weight': item.gross_wt,
+				'in_value': item.total_value,
+				'reference_id': self.name,
+				'order_item': item.name
 			})
 			logistics_transaction.insert(ignore_permissions=True)
 
@@ -32,15 +33,20 @@ class JobOrder(Document):
 		for lt in logistics_transactions:
 			frappe.delete_doc('Logistics Transaction', lt.name, ignore_permissions=True)
 
+
+			
 @frappe.whitelist()
 def make_outbound(order_name):
 
     order = frappe.get_doc("Job Order", order_name)
 
     si = frappe.get_doc({
-        'doctype': 'Outbound',
-        'posting_date': order.posting_date,
-        'job_type': order.job_type
+        "doctype": "Outbound",
+        "posting_date": order.posting_date,
+        "job_type": order.job_type,
+        "total_value": order.total_value,
+        "total_qty": order.total_qty,
+        "total_gross_wt": order.total_gross_wt,
     })
 
     for item in order.items:
@@ -56,6 +62,9 @@ def make_outbound(order_name):
         in_item.reference_id = order.name
         in_item.ref = item.ref
         in_item.description = item.description
+        in_item.boe_no = order.boe_no
+        in_item.total_value = item.total_value
+        in_item.order_item = item.name
 
     si.insert(ignore_permissions=True)
 

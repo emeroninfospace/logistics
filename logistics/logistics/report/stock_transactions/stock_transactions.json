@@ -1,0 +1,35 @@
+{
+ "add_total_row": 1,
+ "add_translate_data": 0,
+ "columns": [],
+ "creation": "2025-12-24 14:12:40.822130",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "json": "{}",
+ "letter_head": null,
+ "modified": "2025-12-24 14:12:52.812278",
+ "modified_by": "Administrator",
+ "module": "Logistics",
+ "name": "Stock Transactions",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Logistics Transaction",
+ "report_name": "Stock Transactions",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Stock Manager"
+  },
+  {
+   "role": "Stock User"
+  }
+ ],
+ "timeout": 0
+}

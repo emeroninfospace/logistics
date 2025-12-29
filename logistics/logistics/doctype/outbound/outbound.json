@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:OB-{MM}-{#####}",
  "creation": "2025-12-22 17:35:24.050471",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -8,7 +9,7 @@
   "section_break_nkjy",
   "cargo_chanel",
   "job_type",
-  "entry_point",
+  "destination",
   "exit_point",
   "column_break_jino",
   "posting_date",
@@ -23,7 +24,15 @@
   "clearing_agent",
   "currency",
   "section_break_hoqy",
-  "items"
+  "items",
+  "section_break_cclu",
+  "total_qty",
+  "column_break_eqyb",
+  "total_gross_wt",
+  "total_value",
+  "terms_tab",
+  "terms",
+  "terms_and_condition"
  ],
  "fields": [
   {
@@ -43,20 +52,17 @@
   {
    "fieldname": "cargo_chanel",
    "fieldtype": "Select",
+   "in_standard_filter": 1,
    "label": "Cargo Chanel",
    "options": "\nBy Land\nSea\nAir"
   },
   {
    "fieldname": "job_type",
    "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Job Type",
    "options": "\nTransfer\nImport\nExport"
-  },
-  {
-   "fieldname": "entry_point",
-   "fieldtype": "Link",
-   "label": "Entry Point",
-   "options": "Country"
   },
   {
    "fieldname": "exit_point",
@@ -70,12 +76,12 @@
   },
   {
    "fieldname": "ship_to",
-   "fieldtype": "Data",
+   "fieldtype": "Small Text",
    "label": "Ship To"
   },
   {
    "fieldname": "bill_to",
-   "fieldtype": "Data",
+   "fieldtype": "Small Text",
    "label": "Bill To"
   },
   {
@@ -127,20 +133,75 @@
    "default": "Today",
    "fieldname": "posting_date",
    "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Posting Date"
+  },
+  {
+   "fieldname": "destination",
+   "fieldtype": "Link",
+   "label": "Destination ",
+   "options": "Country"
+  },
+  {
+   "fieldname": "section_break_cclu",
+   "fieldtype": "Section Break",
+   "hide_border": 1
+  },
+  {
+   "fieldname": "total_qty",
+   "fieldtype": "Float",
+   "label": "Total Qty",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_eqyb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_gross_wt",
+   "fieldtype": "Float",
+   "label": "Total Gross Wt",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_value",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Total Value",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "terms_tab",
+   "fieldtype": "Tab Break",
+   "label": "Terms "
+  },
+  {
+   "fieldname": "terms_and_condition",
+   "fieldtype": "Text Editor",
+   "label": "Terms and Condition"
+  },
+  {
+   "fieldname": "terms",
+   "fieldtype": "Link",
+   "label": "Terms",
+   "options": "Terms and Conditions"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-23 10:13:18.120700",
+ "modified": "2025-12-27 14:05:05.673479",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Outbound",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,

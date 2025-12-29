@@ -247,3 +247,31 @@ app_license = "mit"
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
 
+# fixtures = [
+#     {
+#         "dt": "Custom Field",
+#         "filters": [
+#             ["name", "in", ["Sales Invoice Item-custom_part_no",
+#                             "Sales Invoice Item-custom_job_order",
+#                             "Sales Invoice Item-custom_coo",
+#                             "Sales Invoice Item-custom_hs_code",
+#                             "Sales Invoice Item-custom_ref",
+#                             "Sales Invoice Item-custom_unit_wt",
+#                             "Sales Invoice Item-custom_gross_wt",
+#                             "Sales Invoice-custom_outbound",
+#                             "Sales Invoice-custom_total_gross_wt"
+#                             ]]
+#         ]
+#     },
+  
+    # {
+    #     "dt": "Property Setter",
+    #     "filters": [
+    #         ["name", "in", [
+    #             "Customer-territory-reqd"
+    #         ]]
+    #     ]
+    # },
+  
+
+# ]

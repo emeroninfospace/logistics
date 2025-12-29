@@ -4,9 +4,38 @@
 
 frappe.ui.form.on('Outbound', {
     refresh(frm) {
+        if (frm.doc.docstatus == 0) {
         frm.add_custom_button(__('Get Job Order'), function() {
             get_job_orders(frm);
+        
         });
+        }
+        if (frm.doc.docstatus == 1) {
+            frm.add_custom_button(__('Sales Invoice'), function() {
+                frappe.call({
+                    method:  "logistics.logistics.doctype.outbound.outbound.make_sales_invoice",
+                    args: {
+                        order_name: frm.doc.name
+                    },
+                    callback: function(r) {
+                        if (r.message) {
+                            frappe.show_alert({
+                                message: "Sales Invoice is Created",
+                                indicator: 'green'
+                            }, 5);
+                            frappe.set_route('Form', 'Sales Invoice', r.message);
+                        }
+                    }
+                });
+            }, __('Create'));
+        }
+    },
+    terms: function(frm) {
+        erpnext.utils.get_terms(frm.doc.terms, frm.doc, function(r) {
+		if(!r.exc) {
+			frm.set_value("terms_and_condition", r.message);
+		}
+	});
     }
 });
 
@@ -55,6 +84,11 @@ function get_job_orders(frm) {
                 label: __('To Date'),
                 fieldtype: 'Date',
                 default: frappe.datetime.get_today()
+            },
+            {
+                fieldname: 'boe_no',
+                label: __('BOE No'),
+                fieldtype: 'Data'
             },
             {
                 fieldname: 'section_break',
@@ -138,11 +172,14 @@ function get_job_orders(frm) {
     
     let refresh_job_orders = function() {
         let filters = {
-            docstatus: 1
+            docstatus: 1,
+            status: ['in', ['Pending', 'Partially']]
         };
         
         if (dialog.get_value('customer')) filters.customer = dialog.get_value('customer');
         if (dialog.get_value('supplier')) filters.supplier = dialog.get_value('supplier');
+        if (dialog.get_value('job_type')) filters.job_type = dialog.get_value('job_type');
+        if (dialog.get_value('boe_no')) filters.boe_no = dialog.get_value('boe_no');
         if (dialog.get_value('from_date')) filters.posting_date = ['>=', dialog.get_value('from_date')];
         if (dialog.get_value('to_date')) filters.posting_date = ['<=', dialog.get_value('to_date')];
 
@@ -206,7 +243,6 @@ function fetch_and_add_items(frm, selected_rows, filters) {
                         child.coo = item.coo || '';
                         child.ref = item.ref || '';
                         child.description = item.description || '';
-                        // set the Job Order name into reference_id field on the child
                         child.reference_id = item.parent || '';
                         added_count++;
                     } else {
@@ -232,4 +268,46 @@ function fetch_and_add_items(frm, selected_rows, filters) {
             console.error('Error:', r);
         }
     });
+}
+
+frappe.ui.form.on("Outbound Item", {
+	qty: function(frm, cdt, cdn) {
+		calculate_item_total(frm, cdt, cdn);
+	},
+	unit_price: function(frm, cdt, cdn) {
+		calculate_item_total(frm, cdt, cdn);
+	},
+    unit_wt: function(frm, cdt, cdn) {
+        calculate_item_total(frm, cdt, cdn);
+    },
+});
+
+function calculate_item_total(frm, cdt, cdn) {
+	let row = locals[cdt][cdn];
+	if (row.qty && row.unit_price) {
+		row.total_value = row.qty * row.unit_price;
+	}
+    if (row.qty && row.unit_wt) {
+		row.gross_wt = row.qty * row.unit_wt;
+	}
+	frm.refresh_field("items");
+	calculate_totals(frm);
+}
+
+function calculate_totals(frm) {
+	let total_qty = 0;
+	let total_value = 0;
+    let total_gross = 0;
+	
+	if (frm.doc.items && frm.doc.items.length > 0) {
+		frm.doc.items.forEach(function(item) {
+			total_qty += item.qty || 0;
+            total_gross += item.gross_wt || 0;
+			total_value += item.total_value || 0;
+		});
+	}
+	
+	frm.set_value("total_qty", total_qty);
+    frm.set_value("total_gross_wt", total_gross);
+	frm.set_value("total_value", total_value);
 }

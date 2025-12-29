@@ -20,6 +20,7 @@
   "column_break_qcmd",
   "boe_no",
   "agent",
+  "status",
   "amended_from",
   "section_break_nvhm",
   "items",
@@ -34,7 +35,8 @@
   "address_display",
   "column_break_bosw",
   "supplier_address",
-  "supplier_address_display"
+  "supplier_address_display",
+  "connection_tab"
  ],
  "fields": [
   {
@@ -202,13 +204,29 @@
    "fieldname": "agent",
    "fieldtype": "Data",
    "label": "Agent"
+  },
+  {
+   "fieldname": "connection_tab",
+   "fieldtype": "Tab Break",
+   "label": "Connections",
+   "show_dashboard": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "\nPending\nPartially\nCompleted",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-23 12:42:37.712427",
+ "modified": "2025-12-27 10:45:03.449150",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Job Order",
@@ -216,6 +234,7 @@
  "owner": "Administrator",
  "permissions": [
   {
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
