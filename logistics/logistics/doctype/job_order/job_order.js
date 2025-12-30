@@ -42,10 +42,11 @@ frappe.ui.form.on("Job Order", {
 					name: frm.doc.supplier
 				},
 				callback: function(r) {
+					
 					if (r.message) {
 						let supplier = r.message;
-						if (supplier.supplier_address) {
-							frm.set_value("supplier_address", customer.supplier_address);
+						if (supplier.supplier_primary_address) {
+							frm.set_value("supplier_address", supplier.supplier_primary_address);
 						}
 					}
 				}

@@ -1,0 +1,202 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-12-26 15:50:36.397618",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_q6c3",
+  "naming_series",
+  "ship_to",
+  "trackingwaybill",
+  "currency",
+  "column_break_xlcs",
+  "posting_date",
+  "ship_from",
+  "incoterms",
+  "ship_via",
+  "amended_from",
+  "section_break_bsee",
+  "items",
+  "section_break_mpss",
+  "column_break_bjwd",
+  "total_units",
+  "total_weight",
+  "column_break_qnpz",
+  "subtotal",
+  "frieght",
+  "insurance",
+  "grand_total",
+  "tab_2_tab",
+  "terms",
+  "terms_and_condition"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_q6c3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Commercial Invoice",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "section_break_bsee",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Invoice Item"
+  },
+  {
+   "fieldname": "column_break_xlcs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "options": "Today"
+  },
+  {
+   "fieldname": "ship_from",
+   "fieldtype": "Text",
+   "label": "Ship From"
+  },
+  {
+   "fieldname": "incoterms",
+   "fieldtype": "Data",
+   "label": "Incoterms"
+  },
+  {
+   "fieldname": "ship_via",
+   "fieldtype": "Data",
+   "label": "Ship Via"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "CI.-"
+  },
+  {
+   "fieldname": "ship_to",
+   "fieldtype": "Text",
+   "label": "Ship To"
+  },
+  {
+   "fieldname": "trackingwaybill",
+   "fieldtype": "Data",
+   "label": "Tracking/Waybill"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "section_break_mpss",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_bjwd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_qnpz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "subtotal",
+   "fieldtype": "Currency",
+   "label": "SubTotal",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "frieght",
+   "fieldtype": "Data",
+   "label": "Frieght"
+  },
+  {
+   "fieldname": "insurance",
+   "fieldtype": "Data",
+   "label": "Insurance"
+  },
+  {
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Grand Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_units",
+   "fieldtype": "Float",
+   "label": "Total Units",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_weight",
+   "fieldtype": "Float",
+   "label": "Total Weight",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tab_2_tab",
+   "fieldtype": "Tab Break",
+   "label": "Terms"
+  },
+  {
+   "fieldname": "terms",
+   "fieldtype": "Link",
+   "label": "Terms",
+   "options": "Terms and Conditions"
+  },
+  {
+   "fieldname": "terms_and_condition",
+   "fieldtype": "Text Editor",
+   "label": "Terms and Condition"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-12-29 13:01:26.309864",
+ "modified_by": "Administrator",
+ "module": "Logistics",
+ "name": "Commercial Invoice",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
