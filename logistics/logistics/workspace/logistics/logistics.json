@@ -1,0 +1,59 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"rd0O7MNId5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Logistics</span>\",\"col\":12}},{\"id\":\"KfvSt80-FR\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Job Order\",\"col\":4}},{\"id\":\"f4EtSUAIYr\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Outbound\",\"col\":4}},{\"id\":\"Ba3mGW6HKK\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Commercial Invoice\",\"col\":4}},{\"id\":\"bgrSeB-a8W\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}},{\"id\":\"LIbVOaV6S4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Job Order\",\"col\":3}}]",
+ "creation": "2025-12-22 10:29:18.624908",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "color-monthly-rank",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Logistics",
+ "links": [],
+ "modified": "2025-12-30 17:52:15.649537",
+ "modified_by": "Administrator",
+ "module": "Logistics",
+ "name": "Logistics",
+ "number_cards": [
+  {
+   "label": "Commercial Invoice",
+   "number_card_name": "Commercial Invoice"
+  },
+  {
+   "label": "Job Order",
+   "number_card_name": "Job Order"
+  },
+  {
+   "label": "Outbound",
+   "number_card_name": "Outbound"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 2.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Job Order",
+   "link_to": "Job Order",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Sales Invoice",
+   "link_to": "Sales Invoice",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Logistics"
+}
