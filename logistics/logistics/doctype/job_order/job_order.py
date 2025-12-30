@@ -3,6 +3,8 @@
 
 import frappe
 from frappe.model.document import Document
+from frappe import _
+from frappe.utils import flt
 
 
 class JobOrder(Document):
@@ -37,35 +39,71 @@ class JobOrder(Document):
 			
 @frappe.whitelist()
 def make_outbound(order_name):
-
     order = frappe.get_doc("Job Order", order_name)
 
-    si = frappe.get_doc({
-        "doctype": "Outbound",
-        "posting_date": order.posting_date,
-        "job_type": order.job_type,
-        "total_value": order.total_value,
-        "total_qty": order.total_qty,
-        "total_gross_wt": order.total_gross_wt,
-    })
+    si = frappe.new_doc("Outbound")
+    si.posting_date = order.posting_date
+    si.job_type = order.job_type
+    total_qty = 0
+    total_value = 0
+    total_gross_wt = 0
+
+    processed_map = frappe.db.sql(
+        """
+        SELECT order_item, SUM(qty) AS processed_qty
+        FROM `tabOutbound Item`
+        WHERE reference_id = %s
+          AND parent IN (
+              SELECT name FROM `tabOutbound`
+              WHERE docstatus != 2
+          )
+        GROUP BY order_item
+        """,
+        order_name,
+        as_dict=True
+    )
+
+    processed_qty_dict = {
+        d.order_item: flt(d.processed_qty) for d in processed_map
+    }
 
     for item in order.items:
-        in_item = si.append("items", {})
-        in_item.item_code = item.item_code
-        in_item.qty = item.qty
-        in_item.part_no = item.part_no
-        in_item.unit_price = item.unit_price
-        in_item.hs_code = item.hs_code
-        in_item.unit_wt = item.unit_wt
-        in_item.gross_wt = item.gross_wt
-        in_item.coo = item.coo
-        in_item.reference_id = order.name
-        in_item.ref = item.ref
-        in_item.description = item.description
-        in_item.boe_no = order.boe_no
-        in_item.total_value = item.total_value
-        in_item.order_item = item.name
+        processed_qty = processed_qty_dict.get(item.name, 0)
+        remaining_qty = flt(item.qty) - processed_qty
+
+        if remaining_qty <= 0:
+            continue
+
+        line_value = remaining_qty * flt(item.unit_price)
+        line_gross_wt = remaining_qty * flt(item.unit_wt)
+
+        si.append("items", {
+            "item_code": item.item_code,
+            "qty": remaining_qty,
+            "part_no": item.part_no,
+            "unit_price": item.unit_price,
+            "hs_code": item.hs_code,
+            "unit_wt": item.unit_wt,
+            "gross_wt": line_gross_wt,
+            "coo": item.coo,
+            "reference_id": order.name,    
+            "order_item": item.name,        
+            "ref": item.ref,
+            "description": item.description,
+            "boe_no": order.boe_no,
+            "total_value": line_value,
+        })
+        total_qty += remaining_qty
+        total_value += line_value
+        total_gross_wt += line_gross_wt
+
+    si.total_qty = total_qty
+    si.total_value = total_value
+    si.total_gross_wt = total_gross_wt
+
+    if not si.items:
+        frappe.msgprint(_("No items to outbound. All items already outbounded."))
+        return None
 
     si.insert(ignore_permissions=True)
-
     return si.name

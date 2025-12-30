@@ -1,15 +1,15 @@
 import frappe
 from frappe import _
 
-# def get_data():
-# 	return {
-# 		"fieldname": "reference_id",		
-# 		"internal_links": {
-# 			"Outbound": ["items", "reference_id"]
+def get_data():
+	return {
+		"fieldname": "outbound",		
+		"internal_links": {
+			"Commercial Invoice": ["items", "outbound"]
 			
-#         },
-# 		"transactions": [
-# 			{"label": _("Reference"), "items": ["Outbound"]},
+        },
+		"transactions": [
+			{"label": _("Reference"), "items": ["Commercial Invoice"]},
 						
-# 		]
-#     }
+		]
+    }

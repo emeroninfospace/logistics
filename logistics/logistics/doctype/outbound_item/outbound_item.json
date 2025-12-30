@@ -11,16 +11,26 @@
   "qty",
   "unit_price",
   "total_value",
-  "reference_id",
-  "order_item",
+  "lpn",
+  "material_description",
   "column_break_aaed",
   "hs_code",
   "unit_wt",
   "gross_wt",
   "coo",
+  "type",
   "ref",
   "boe_no",
-  "description"
+  "description",
+  "measurements_section",
+  "length",
+  "width",
+  "column_break_tgqg",
+  "height",
+  "cbm",
+  "reference_section",
+  "reference_id",
+  "order_item"
  ],
  "fields": [
   {
@@ -122,13 +132,64 @@
    "fieldtype": "Data",
    "label": "Order Item",
    "read_only": 1
+  },
+  {
+   "fieldname": "material_description",
+   "fieldtype": "Text Editor",
+   "label": "Material Description"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "reference_section",
+   "fieldtype": "Section Break",
+   "label": "Reference"
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "\nPallet\nBox"
+  },
+  {
+   "fieldname": "cbm",
+   "fieldtype": "Float",
+   "label": "CBM"
+  },
+  {
+   "fieldname": "measurements_section",
+   "fieldtype": "Section Break",
+   "label": "Measurements "
+  },
+  {
+   "fieldname": "length",
+   "fieldtype": "Float",
+   "label": "Length"
+  },
+  {
+   "fieldname": "width",
+   "fieldtype": "Float",
+   "label": "Width"
+  },
+  {
+   "fieldname": "column_break_tgqg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "height",
+   "fieldtype": "Float",
+   "label": "Height"
+  },
+  {
+   "fieldname": "lpn",
+   "fieldtype": "Data",
+   "label": "LPN"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-12-27 12:45:11.400184",
+ "modified": "2025-12-30 16:42:22.025773",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Outbound Item",

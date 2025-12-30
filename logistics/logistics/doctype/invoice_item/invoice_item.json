@@ -15,10 +15,12 @@
   "weight",
   "column_break_snqh",
   "qty",
-  "eccn",
-  "lic",
   "unit_price",
-  "extended_price"
+  "extended_price",
+  "boe_no",
+  "reference_section",
+  "outbound",
+  "outbound_item"
  ],
  "fields": [
   {
@@ -70,16 +72,6 @@
    "label": "Qty"
   },
   {
-   "fieldname": "eccn",
-   "fieldtype": "Data",
-   "label": "ECCN"
-  },
-  {
-   "fieldname": "lic",
-   "fieldtype": "Data",
-   "label": "LIC"
-  },
-  {
    "fieldname": "unit_price",
    "fieldtype": "Currency",
    "in_list_view": 1,
@@ -97,13 +89,37 @@
    "fieldtype": "Data",
    "label": "Item",
    "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "reference_section",
+   "fieldtype": "Section Break",
+   "label": "Reference"
+  },
+  {
+   "fieldname": "outbound",
+   "fieldtype": "Link",
+   "label": "Outbound",
+   "options": "Outbound",
+   "read_only": 1
+  },
+  {
+   "fieldname": "outbound_item",
+   "fieldtype": "Data",
+   "label": "Outbound Item"
+  },
+  {
+   "fieldname": "boe_no",
+   "fieldtype": "Data",
+   "label": "BOE NO",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-12-27 14:55:33.449308",
+ "modified": "2025-12-30 12:54:31.049379",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Invoice Item",
