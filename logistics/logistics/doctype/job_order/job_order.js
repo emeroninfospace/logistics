@@ -142,22 +142,32 @@ function calculate_item_total(frm, cdt, cdn) {
 }
 
 function calculate_totals(frm) {
-	let total_qty = 0;
-	let total_value = 0;
+    let total_qty = 0;
+    let total_value = 0;
     let total_gross = 0;
-	
-	if (frm.doc.items && frm.doc.items.length > 0) {
-		frm.doc.items.forEach(function(item) {
-			total_qty += item.qty || 0;
+    
+    if (frm.doc.items && frm.doc.items.length > 0) {
+        frm.doc.items.forEach(function(item) {
+            if (item.qty && item.unit_price && !item.total_value) {
+                item.total_value = item.qty * item.unit_price;
+            }
+            if (item.qty && item.unit_wt && !item.gross_wt) {
+                item.gross_wt = item.qty * item.unit_wt;
+            }
+            
+            total_qty += item.qty || 0;
             total_gross += item.gross_wt || 0;
-			total_value += item.total_value || 0;
-		});
-	}
-	
-	frm.set_value("total_qty", total_qty);
+            total_value += item.total_value || 0;
+        });
+        
+        frm.refresh_field("items");
+    }
+    
+    frm.set_value("total_qty", total_qty);
     frm.set_value("total_gross_wt", total_gross);
-	frm.set_value("total_value", total_value);
+    frm.set_value("total_value", total_value);
 }
+
 
 
 

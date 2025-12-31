@@ -8,6 +8,7 @@
  "field_order": [
   "item_code",
   "part_no",
+  "uom",
   "qty",
   "unit_price",
   "total_value",
@@ -183,13 +184,20 @@
    "fieldname": "lpn",
    "fieldtype": "Data",
    "label": "LPN"
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "UOM",
+   "options": "UOM"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-12-30 16:42:22.025773",
+ "modified": "2025-12-31 09:46:03.964546",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Outbound Item",

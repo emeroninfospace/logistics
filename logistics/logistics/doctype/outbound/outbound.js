@@ -10,7 +10,7 @@ frappe.ui.form.on('Outbound', {
             });
         }
         
-        if (frm.doc.docstatus == 0) {
+        if (frm.doc.docstatus == 1) {
             frm.add_custom_button(__('Commercial Invoice'), function () {
                 frappe.model.open_mapped_doc({
                     method: "logistics.logistics.doctype.outbound.outbound.make_commercial_invoice",
