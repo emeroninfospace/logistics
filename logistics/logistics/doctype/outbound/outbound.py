@@ -14,6 +14,10 @@ class Outbound(Document):
     def before_submit(self):
         self.create_logistics_transactions()
         self.update_job_order_status()
+        try:
+            make_commercial_invoice(self.name)
+        except Exception:
+            frappe.log_error(frappe.get_traceback(), f"make_commercial_invoice failed for {self.name}")
 
     def before_cancel(self):
         self.update_logistics_transactions()
@@ -210,9 +214,10 @@ def make_commercial_invoice(source_name, target_doc=None):
             },
         },
         target_doc,
-        postprocess=postprocess,
+        postprocess=postprocess,    
     )
     doclist.insert(ignore_permissions=True)
+    doclist.submit()
 
     return doclist
 
