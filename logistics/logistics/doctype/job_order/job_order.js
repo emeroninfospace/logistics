@@ -121,7 +121,7 @@ frappe.ui.form.on("Job Order Item", {
 	qty: function(frm, cdt, cdn) {
 		calculate_item_total(frm, cdt, cdn);
 	},
-	unit_price: function(frm, cdt, cdn) {
+	total_value: function(frm, cdt, cdn) {
 		calculate_item_total(frm, cdt, cdn);
 	},
     gross_wt: function(frm, cdt, cdn) {
@@ -131,8 +131,8 @@ frappe.ui.form.on("Job Order Item", {
 
 function calculate_item_total(frm, cdt, cdn) {
 	let row = locals[cdt][cdn];
-	if (row.qty && row.unit_price) {
-		row.total_value = row.qty * row.unit_price;
+	if (row.qty && row.total_value) {
+		row.unit_price = row.total_value / row.qty;
 	}
     if (row.qty && row.gross_wt) {
 		row.unit_wt = row.gross_wt / row.qty
@@ -148,11 +148,11 @@ function calculate_totals(frm) {
     
     if (frm.doc.items && frm.doc.items.length > 0) {
         frm.doc.items.forEach(function(item) {
-            if (item.qty && item.unit_price && !item.total_value) {
-                item.total_value = item.qty * item.unit_price;
+            if (item.qty && item.total_value) {
+                item.unit_price = item.total_value / item.qty;
             }
-            if (item.qty && item.unit_wt && !item.gross_wt) {
-                item.gross_wt = item.qty * item.unit_wt;
+            if (item.qty && item.gross_wt) {
+                item.unit_wt = item.gross_wt / item.qty;
             }
             
             total_qty += item.qty || 0;
