@@ -11,11 +11,13 @@
   "job_type",
   "destination",
   "exit_point",
+  "boe_no",
   "column_break_jino",
   "posting_date",
   "ship_to",
   "bill_to",
   "on_behalf_of",
+  "ship_via",
   "amended_from",
   "section_break_jzkx",
   "payment_mode",
@@ -62,7 +64,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Job Type",
-   "options": "\nTransfer\nImport\nExport"
+   "options": "\nIMPORT\nTEMPORARY EXIT\nEXPORT\nIMPORT FOR RE-EXPORT\nTRANSIT OUT\nFREEZONE ENTRY\nFREEZONE INTERNAL TRANSFER"
   },
   {
    "fieldname": "exit_point",
@@ -187,13 +189,23 @@
    "fieldtype": "Link",
    "label": "Terms",
    "options": "Terms and Conditions"
+  },
+  {
+   "fieldname": "boe_no",
+   "fieldtype": "Data",
+   "label": "BOE NO"
+  },
+  {
+   "fieldname": "ship_via",
+   "fieldtype": "Data",
+   "label": "Ship Via"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-27 14:05:05.673479",
+ "modified": "2026-01-02 15:03:54.252751",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Outbound",

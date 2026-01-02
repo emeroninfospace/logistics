@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"rd0O7MNId5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Logistics</span>\",\"col\":12}},{\"id\":\"KfvSt80-FR\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Job Order\",\"col\":4}},{\"id\":\"f4EtSUAIYr\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Outbound\",\"col\":4}},{\"id\":\"Ba3mGW6HKK\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Commercial Invoice\",\"col\":4}},{\"id\":\"VLC-tVvEMN\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}},{\"id\":\"cvnNUtVvAJ\",\"type\":\"card\",\"data\":{\"card_name\":\"Logistics\",\"col\":4}},{\"id\":\"XpWl60LcK9\",\"type\":\"card\",\"data\":{\"card_name\":\"Selling\",\"col\":4}},{\"id\":\"fKQo23VPtY\",\"type\":\"card\",\"data\":{\"card_name\":\"Accounts\",\"col\":4}},{\"id\":\"oEAR3lb0uu\",\"type\":\"card\",\"data\":{\"card_name\":\"Report\",\"col\":4}}]",
+ "content": "[{\"id\":\"rd0O7MNId5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Logistics</span>\",\"col\":12}},{\"id\":\"KfvSt80-FR\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Job Order\",\"col\":5}},{\"id\":\"f4EtSUAIYr\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Outbound\",\"col\":5}},{\"id\":\"cvnNUtVvAJ\",\"type\":\"card\",\"data\":{\"card_name\":\"Logistics\",\"col\":4}},{\"id\":\"XpWl60LcK9\",\"type\":\"card\",\"data\":{\"card_name\":\"Selling\",\"col\":4}},{\"id\":\"VLC-tVvEMN\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}},{\"id\":\"HC9w-MHhxo\",\"type\":\"card\",\"data\":{\"card_name\":\"Report\",\"col\":4}}]",
  "creation": "2025-12-22 10:29:18.624908",
  "custom_blocks": [],
  "docstatus": 0,
@@ -13,6 +13,216 @@
  "is_hidden": 0,
  "label": "Logistics",
  "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Purchase Invoice",
+   "link_count": 0,
+   "link_to": "Purchase Invoice",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Journal Entry",
+   "link_count": 0,
+   "link_to": "Journal Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Account",
+   "link_count": 0,
+   "link_to": "Account",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Report",
+   "link_count": 5,
+   "link_to": "Account",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Stock Transactions",
+   "link_count": 0,
+   "link_to": "Stock Transactions",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "General Ledger",
+   "link_count": 0,
+   "link_to": "General Ledger",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Sales Invoice Trends",
+   "link_count": 0,
+   "link_to": "Sales Invoice Trends",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Balance Sheet",
+   "link_count": 0,
+   "link_to": "Balance Sheet",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Profit and Loss Statement",
+   "link_count": 0,
+   "link_to": "Profit and Loss Statement",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "description": "<img \n  src=\"https://www.michiganstateuniversityonline.com/wp-content/uploads/sites/3/2014/04/logistics-fundamentals-supply-chain.jpg?w=715&h=375&crop=1\"\n  alt=\"Logistics Fundamentals Supply Chain\"\n  width=\"715\"\n  height=\"375\"\n/>",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Logistics",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Job Order",
+   "link_count": 0,
+   "link_to": "Job Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Outbound",
+   "link_count": 0,
+   "link_to": "Outbound",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "description": "<img \n  src=\"https://cdn.pixabay.com/photo/2017/03/13/17/26/ecommerce-2140604_1280.jpg\"\n  alt=\"Selling\"\n  width=\"715\"\n  height=\"375\"\n/>",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Selling",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Invoice",
+   "link_count": 0,
+   "link_to": "Sales Invoice",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Payment Entry",
+   "link_count": 0,
+   "link_to": "Payment Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Purchase Invoice",
+   "link_count": 0,
+   "link_to": "Purchase Invoice",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Journal Entry",
+   "link_count": 0,
+   "link_to": "Journal Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Report",
+   "link_count": 3,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Stock Transactions",
+   "link_count": 0,
+   "link_to": "Stock Transactions",
+   "link_type": "Report",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "General Ledger",
+   "link_count": 0,
+   "link_to": "General Ledger",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Balance Sheet",
+   "link_count": 0,
+   "link_to": "Balance Sheet",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "GL Entry",
+   "type": "Link"
+  },
   {
    "description": "<h1>Master</h1>",
    "hidden": 0,
@@ -72,186 +282,13 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
-  },
-  {
-   "description": "<img \n  src=\"https://cdn.pixabay.com/photo/2017/03/13/17/26/ecommerce-2140604_1280.jpg\"\n  alt=\"Selling\"\n  width=\"715\"\n  height=\"375\"\n/>",
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Selling",
-   "link_count": 2,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Sales Invoice",
-   "link_count": 0,
-   "link_to": "Sales Invoice",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Payment Entry",
-   "link_count": 0,
-   "link_to": "Payment Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "description": "<img \n  src=\"https://www.michiganstateuniversityonline.com/wp-content/uploads/sites/3/2014/04/logistics-fundamentals-supply-chain.jpg?w=715&h=375&crop=1\"\n  alt=\"Logistics Fundamentals Supply Chain\"\n  width=\"715\"\n  height=\"375\"\n/>",
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Logistics",
-   "link_count": 3,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Job Order",
-   "link_count": 0,
-   "link_to": "Job Order",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Outbound",
-   "link_count": 0,
-   "link_to": "Outbound",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Commercial Invoice",
-   "link_count": 0,
-   "link_to": "Commercial Invoice",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "description": "<img \n  src=\"https://plus.unsplash.com/premium_photo-1679496828960-75673f2cbeca?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YWNjb3VudHxlbnwwfHwwfHx8MA%3D%3D\"\n  alt=\"Accounts\"\n  width=\"715\"\n  height=\"375\"\n/>",
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Accounts",
-   "link_count": 3,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Purchase Invoice",
-   "link_count": 0,
-   "link_to": "Purchase Invoice",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Journal Entry",
-   "link_count": 0,
-   "link_to": "Journal Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Account",
-   "link_count": 0,
-   "link_to": "Account",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Report",
-   "link_count": 5,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Stock Transactions",
-   "link_count": 0,
-   "link_to": "Stock Transactions",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "General Ledger",
-   "link_count": 0,
-   "link_to": "General Ledger",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Sales Invoice Trends",
-   "link_count": 0,
-   "link_to": "Sales Invoice Trends",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Balance Sheet",
-   "link_count": 0,
-   "link_to": "Balance Sheet",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Profit and Loss Statement",
-   "link_count": 0,
-   "link_to": "Profit and Loss Statement",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
   }
  ],
- "modified": "2025-12-30 18:32:12.270741",
+ "modified": "2026-01-02 15:28:59.658129",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Logistics",
  "number_cards": [
-  {
-   "label": "Commercial Invoice",
-   "number_card_name": "Commercial Invoice"
-  },
   {
    "label": "Job Order",
    "number_card_name": "Job Order"
