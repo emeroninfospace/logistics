@@ -14,6 +14,7 @@ class Outbound(Document):
     def before_submit(self):
         self.create_logistics_transactions()
         self.update_job_order_status()
+        self.validate_boe()
         try:
             make_commercial_invoice(self.name)
         except Exception:
@@ -24,18 +25,7 @@ class Outbound(Document):
         self.update_job_order_status()
 
     def validate(self):
-        for item in self.items:
-            if item.reference_id:
-                job_order_rate = frappe.db.get_value("Job Order Item",item.order_item, "unit_price")
-
-                if flt(item.unit_price) < flt(job_order_rate):
-                    frappe.throw(
-                        f"""
-                        Rate mismatch for Item <b>{item.item_code}</b><br>
-                        Job Order Rate (<b>{job_order_rate}</b>) is higher than
-                        Outbound Rate (<b>{item.unit_price}</b>).
-                        """
-                    )
+        self.validate_unit_prices()
 
     def create_logistics_transactions(self):
         for item in self.items:
@@ -123,7 +113,24 @@ class Outbound(Document):
             
             jo.db_set('status', status, update_modified=False)
 
+    def validate_unit_prices(self):
+        for item in self.items:
+            if item.reference_id:
+                job_order_rate = frappe.db.get_value("Job Order Item",item.order_item, "unit_price")
 
+                if flt(item.unit_price) < flt(job_order_rate):
+                    frappe.throw(
+                        f"""
+                        Rate mismatch for Item <b>{item.item_code}</b><br>
+                        Job Order Rate (<b>{job_order_rate}</b>) is higher than
+                        Outbound Rate (<b>{item.unit_price}</b>).
+                        """
+                    )
+
+    def validate_boe(self):
+        for item in self.items:
+            if not item.boe_no:
+                frappe.throw(f"BOE No is required for item {item.item_code}.")
 
 @frappe.whitelist()
 def get_job_order_items(job_order):
@@ -175,50 +182,5 @@ def get_consumed_qty(job_order, item_code):
     
     return consumed[0].total_qty if consumed else 0
 
-
-
-@frappe.whitelist()
-def make_commercial_invoice(source_name, target_doc=None):
-    def postprocess(source, target):
-        target.run_method("set_missing_values")
-        target.run_method("calculate_totals")
-
-    doclist = get_mapped_doc(
-        "Outbound",
-        source_name,
-        {
-            "Outbound": {
-                "doctype": "Commercial Invoice",
-                "field_map": {   
-                "total_qty": "total_units",
-                "total_gross_wt": "total_weight",
-                "total_value": "subtotal",
-                "total_value": "grand_total",
-                "inco_term": "incoterms",
-                "bill_to": "ship_from",
-
-                },
-            },
-            "Outbound Item": {
-                "doctype": "Invoice Item",
-                "field_map": {
-                    "item_code": "item",
-                    "description": "description",
-                    "qty": "qty",
-                    "part_no": "part_number",
-                    "gross_wt": "weight",
-                    "total_value": "extended_price",
-                    "name": "outbound_item",
-                    "parent": "outbound",
-                },
-            },
-        },
-        target_doc,
-        postprocess=postprocess,    
-    )
-    doclist.insert(ignore_permissions=True)
-    doclist.submit()
-
-    return doclist
 
 
