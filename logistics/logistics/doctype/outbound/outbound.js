@@ -295,7 +295,7 @@ frappe.ui.form.on("Outbound Item", {
 	unit_price: function(frm, cdt, cdn) {
 		calculate_item_total(frm, cdt, cdn);
 	},
-    unit_wt: function(frm, cdt, cdn) {
+    gross_wt: function(frm, cdt, cdn) {
         calculate_item_total(frm, cdt, cdn);
     },
     length: function(frm, cdt, cdn) {
@@ -314,8 +314,8 @@ function calculate_item_total(frm, cdt, cdn) {
 	if (row.qty && row.unit_price) {
 		row.total_value = row.qty * row.unit_price;
 	}
-    if (row.qty && row.unit_wt) {
-		row.gross_wt = row.qty * row.unit_wt;
+    if (row.qty && row.gross_wt) {
+		row.unit_wt = row.gross_wt / row.qty;
 	}
 	frm.refresh_field("items");
 	calculate_totals(frm);
