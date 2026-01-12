@@ -1,13 +1,13 @@
 // // Copyright (c) 2025, Emeron Infospace and contributors
 // // For license information, please see license.txt
 
-frappe.ui.form.on("Job Order", {
+frappe.ui.form.on("Inbound", {
 
     refresh(frm) {
         if (frm.doc.docstatus == 1) {
             frm.add_custom_button(__('Outbound'), function() {
                 frappe.call({
-                    method:  "logistics.logistics.doctype.job_order.job_order.make_outbound",
+                    method:  "logistics.logistics.doctype.inbound.inbound.make_outbound",
                     args: {
                         order_name: frm.doc.name
                     },
@@ -117,7 +117,7 @@ frappe.ui.form.on("Job Order", {
 		calculate_totals(frm);
 	},
 });
-frappe.ui.form.on("Job Order Item", {
+frappe.ui.form.on("Inbound Item", {
 	qty: function(frm, cdt, cdn) {
 		calculate_item_total(frm, cdt, cdn);
 	},

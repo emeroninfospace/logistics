@@ -23,6 +23,11 @@ class Outbound(Document):
     def before_cancel(self):
         self.update_logistics_transactions()
         self.update_job_order_status()
+        self.update_inbound_item_balance()
+        
+
+    def on_submit(self):
+        self.update_inbound_item_balance()
 
     def validate(self):
         self.validate_unit_prices()
@@ -80,7 +85,7 @@ class Outbound(Document):
         job_orders = set(item.reference_id for item in self.items if item.reference_id)
         
         for job_order_id in job_orders:
-            jo = frappe.get_doc('Job Order', job_order_id)
+            jo = frappe.get_doc('Inbound', job_order_id)
             
             total_job_order_qty = 0
             total_processed_qty = 0
@@ -98,9 +103,9 @@ class Outbound(Document):
                 
                 processed_qty = flt(processed[0].processed_qty) if processed else 0
                 
-                for current_item in self.items:
-                    if current_item.order_item == jo_item.name:
-                        processed_qty += flt(current_item.qty)
+                # for current_item in self.items:
+                #     if current_item.order_item == jo_item.name:
+                #         processed_qty += flt(current_item.qty)
                 
                 total_processed_qty += processed_qty
             
@@ -116,13 +121,13 @@ class Outbound(Document):
     def validate_unit_prices(self):
         for item in self.items:
             if item.reference_id:
-                job_order_rate = frappe.db.get_value("Job Order Item",item.order_item, "unit_price")
+                job_order_rate = frappe.db.get_value("Inbound Item",item.order_item, "unit_price")
 
                 if flt(item.unit_price) < flt(job_order_rate):
                     frappe.throw(
                         f"""
                         Rate mismatch for Item <b>{item.item_code}</b><br>
-                        Job Order Rate (<b>{job_order_rate}</b>) is higher than
+                        Inbound Rate (<b>{job_order_rate}</b>) is higher than
                         Outbound Rate (<b>{item.unit_price}</b>).
                         """
                     )
@@ -132,13 +137,54 @@ class Outbound(Document):
             if not item.boe_no:
                 frappe.throw(f"BOE No is required for item {item.item_code}.")
 
+    
+    def update_inbound_item_balance(self):
+        inbound_item_rows = set(
+            item.order_item for item in self.items if item.order_item
+        )
+
+        for inbound_item_row in inbound_item_rows:
+
+            inbound_qty = frappe.db.get_value(
+                "Inbound Item",
+                inbound_item_row,
+                "qty"
+            ) or 0
+
+            issued_qty = frappe.db.sql("""
+                SELECT IFNULL(SUM(oi.qty), 0)
+                FROM `tabOutbound Item` oi
+                INNER JOIN `tabOutbound` o ON o.name = oi.parent
+                WHERE oi.order_item = %s
+                AND o.docstatus = 1
+            """, inbound_item_row)[0][0]
+
+            balance_qty = flt(inbound_qty) - flt(issued_qty)
+
+            if balance_qty < 0:
+                frappe.throw(
+                    f"Item Row {inbound_item_row}: "
+                    f"Outbound qty exceeds Inbound qty"
+                )
+
+            frappe.db.set_value(
+                "Inbound Item",
+                inbound_item_row,
+                "balance_qty",
+                balance_qty,
+                update_modified=False
+            )
+
+
+
+
 @frappe.whitelist()
 def get_job_order_items(job_order):
     if isinstance(job_order, str):
         job_order = json.loads(job_order)
     
     job_orders = frappe.get_all(
-        "Job Order",
+        "Inbound",
         filters={"name": ["in", job_order]},
         fields=["name", "boe_no"]
     )
@@ -146,7 +192,7 @@ def get_job_order_items(job_order):
     boe_map = {jo.name: jo.boe_no for jo in job_orders}
     
     items = frappe.get_all(
-        "Job Order Item",
+        "Inbound Item",
         filters={"parent": ["in", job_order]},
         fields=[
             "name",

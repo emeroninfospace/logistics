@@ -15,8 +15,11 @@
   "column_break_jino",
   "posting_date",
   "ship_to",
+  "ship_to_address",
   "bill_to",
+  "bill_to_address",
   "on_behalf_of",
+  "on_behalf_address",
   "ship_via",
   "amended_from",
   "section_break_jzkx",
@@ -78,18 +81,21 @@
   },
   {
    "fieldname": "ship_to",
-   "fieldtype": "Small Text",
-   "label": "Ship To"
+   "fieldtype": "Link",
+   "label": "Ship To",
+   "options": "Address"
   },
   {
    "fieldname": "bill_to",
-   "fieldtype": "Small Text",
-   "label": "Bill To"
+   "fieldtype": "Link",
+   "label": "Bill To",
+   "options": "Address"
   },
   {
    "fieldname": "on_behalf_of",
-   "fieldtype": "Data",
-   "label": "On Behalf of"
+   "fieldtype": "Link",
+   "label": "On Behalf of",
+   "options": "Address"
   },
   {
    "fieldname": "section_break_jzkx",
@@ -199,13 +205,31 @@
    "fieldname": "ship_via",
    "fieldtype": "Data",
    "label": "Ship Via"
+  },
+  {
+   "fieldname": "ship_to_address",
+   "fieldtype": "Small Text",
+   "label": "Address",
+   "read_only": 1
+  },
+  {
+   "fieldname": "bill_to_address",
+   "fieldtype": "Small Text",
+   "label": "Address",
+   "read_only": 1
+  },
+  {
+   "fieldname": "on_behalf_address",
+   "fieldtype": "Small Text",
+   "label": "Address",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-02 15:03:54.252751",
+ "modified": "2026-01-12 12:35:22.720894",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Outbound",

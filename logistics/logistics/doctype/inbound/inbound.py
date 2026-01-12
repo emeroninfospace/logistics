@@ -8,7 +8,7 @@ from frappe import _
 from frappe.utils import flt
 
 
-class JobOrder(Document):
+class Inbound(Document):
     def before_save(self):
         self.calculate_totals()
     
@@ -56,7 +56,7 @@ class JobOrder(Document):
 
 @frappe.whitelist()
 def make_outbound(order_name):
-    order = frappe.get_doc("Job Order", order_name)
+    order = frappe.get_doc("Inbound", order_name)
 
     si = frappe.new_doc("Outbound")
     si.posting_date = order.posting_date
