@@ -67,7 +67,15 @@ frappe.ui.form.on('Outbound', {
 		if (!frm.doc.on_behalf_of) {
 			frm.set_value("on_behalf_address", "");
 		}
-	}
+	},
+    onload_post_render(frm) {
+        if (frm.is_new()) {
+            frm.doc.destination = null;
+            frm.doc.exit_point = null
+            frm.refresh_field("destination");
+            frm.refresh_field("exit_point");
+        }
+    }
 });
 
 function get_job_orders(frm) {
