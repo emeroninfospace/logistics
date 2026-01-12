@@ -18,12 +18,61 @@ frappe.ui.form.on('Outbound', {
                 frm.set_value("terms_and_condition", r.message);
             }
         });
-    }
+    },
+
+    ship_to: function (frm) {
+		if (frm.doc.ship_to) {
+			frappe.call({
+				method: "frappe.contacts.doctype.address.address.get_address_display",
+				args: {
+					address_dict: frm.doc.ship_to,
+				},
+				callback: function (r) {
+					frm.set_value("ship_to_address", r.message);
+				},
+			});
+        }
+		if (!frm.doc.ship_to) {
+			frm.set_value("ship_to_address", "");
+		}
+	},
+    bill_to: function (frm) {
+		if (frm.doc.bill_to) {
+			frappe.call({
+				method: "frappe.contacts.doctype.address.address.get_address_display",
+				args: {
+					address_dict: frm.doc.bill_to,
+				},
+				callback: function (r) {
+					frm.set_value("bill_to_address", r.message);
+				},
+			});
+        }
+		if (!frm.doc.supplier_address) {
+			frm.set_value("bill_to_address", "");
+		}
+	},
+    on_behalf_of: function (frm) {
+		if (frm.doc.on_behalf_of) {
+			frappe.call({
+				method: "frappe.contacts.doctype.address.address.get_address_display",
+				args: {
+					address_dict: frm.doc.on_behalf_of,
+				},
+				callback: function (r) {
+					frm.set_value("on_behalf_address", r.message);
+				},
+			});
+        }
+		if (!frm.doc.on_behalf_of) {
+			frm.set_value("on_behalf_address", "");
+		}
+	}
 });
 
 function get_job_orders(frm) {
     let dialog = new frappe.ui.Dialog({
-        title: __('Select Job Orders'),
+        title: __('Select Inbound'),
         fields: [
             {
                 fieldname: 'customer',
@@ -77,7 +126,7 @@ function get_job_orders(frm) {
             },
             {
                 fieldname: 'job_orders',
-                label: __('Job Orders'),
+                label: __('Inbound'),
                 fieldtype: 'Table',
                 cannot_add_rows: true,
                 cannot_delete_rows: true,
@@ -92,9 +141,9 @@ function get_job_orders(frm) {
                     },
                     {
                         fieldname: 'name',
-                        label: __('Job Order ID'),
+                        label: __('Inbound ID'),
                         fieldtype: 'Link',
-                        options: 'Job Order',
+                        options: 'Inbound',
                         in_list_view: 1,
                         width: 150
                     },
@@ -137,13 +186,13 @@ function get_job_orders(frm) {
                 let selected_job_orders = values.job_orders.filter(row => row.__checked === 1);
                 
                 if (selected_job_orders.length === 0) {
-                    frappe.show_alert({message: __('Please select at least one job order'), indicator: 'red'});
+                    frappe.show_alert({message: __('Please select at least one inbound'), indicator: 'red'});
                     return;
                 }
                 
                 fetch_and_add_items(frm, selected_job_orders, values);
             } else {
-                frappe.show_alert({message: __('No job orders available'), indicator: 'red'});
+                frappe.show_alert({message: __('No inbound available'), indicator: 'red'});
             }
             dialog.hide();
         }
@@ -167,7 +216,7 @@ function get_job_orders(frm) {
         frappe.call({
             method: 'frappe.client.get_list',
             args: {
-                doctype: 'Job Order',
+                doctype: 'Inbound',
                 fields: ['name', 'posting_date','customer', 'total_qty', 'total_value', 'total_gross_wt'],
                 filters: filters,
                 limit_page_length: 50
@@ -192,7 +241,7 @@ function get_job_orders(frm) {
 
 function fetch_and_add_items(frm, selected_rows, filters) {
     let job_order_names = selected_rows.map(row => row.name);
-    console.log('Selected job orders:', job_order_names);
+    console.log('Selected inbound:', job_order_names);
     
     frappe.call({
         method: 'logistics.logistics.doctype.outbound.outbound.get_job_order_items',
@@ -264,7 +313,7 @@ function fetch_and_add_items(frm, selected_rows, filters) {
                 }
             } else {
                 frappe.show_alert({
-                    message: __('No items found for selected job orders'),
+                    message: __('No items found for selected inbound'),
                     indicator: 'yellow'
                 });
             }

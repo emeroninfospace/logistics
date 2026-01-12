@@ -104,36 +104,6 @@
    "type": "Link"
   },
   {
-   "description": "<img \n  src=\"https://www.michiganstateuniversityonline.com/wp-content/uploads/sites/3/2014/04/logistics-fundamentals-supply-chain.jpg?w=715&h=375&crop=1\"\n  alt=\"Logistics Fundamentals Supply Chain\"\n  width=\"715\"\n  height=\"375\"\n/>",
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Logistics",
-   "link_count": 2,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Job Order",
-   "link_count": 0,
-   "link_to": "Job Order",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Outbound",
-   "link_count": 0,
-   "link_to": "Outbound",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
    "description": "<img \n  src=\"https://cdn.pixabay.com/photo/2017/03/13/17/26/ecommerce-2140604_1280.jpg\"\n  alt=\"Selling\"\n  width=\"715\"\n  height=\"375\"\n/>",
    "hidden": 0,
    "is_query_report": 0,
@@ -282,9 +252,39 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "description": "<img \n  src=\"https://www.michiganstateuniversityonline.com/wp-content/uploads/sites/3/2014/04/logistics-fundamentals-supply-chain.jpg?w=715&h=375&crop=1\"\n  alt=\"Logistics Fundamentals Supply Chain\"\n  width=\"715\"\n  height=\"375\"\n/>",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Logistics",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Inbound",
+   "link_count": 0,
+   "link_to": "Inbound",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Outbound",
+   "link_count": 0,
+   "link_to": "Outbound",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-01-02 15:28:59.658129",
+ "modified": "2026-01-12 10:59:00.955465",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Logistics",

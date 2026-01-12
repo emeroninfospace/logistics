@@ -1,4 +1,4 @@
-frappe.listview_settings['Job Order'] = {
+frappe.listview_settings['Inbound'] = {
     add_fields: [ "status"],
     get_indicator: function(doc) {
         if (doc.status === "Pending") {

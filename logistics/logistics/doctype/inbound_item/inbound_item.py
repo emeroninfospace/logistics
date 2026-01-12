@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class JobOrderItem(Document):
+class InboundItem(Document):
 	pass
