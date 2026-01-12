@@ -21,7 +21,7 @@ frappe.query_reports["Inbound Details"] = {
         },
         {
             fieldname: "reference_no",
-            label: "Reference Number",
+            label: "Invoice Number",
             fieldtype: "Data"
         }
     ]
