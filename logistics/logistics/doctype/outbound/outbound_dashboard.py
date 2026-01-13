@@ -5,11 +5,11 @@ def get_data():
 	return {
 		"fieldname": "outbound",		
 		"internal_links": {
-			"Job Order": ["items", "reference_id"]
+			"Inbound": ["items", "reference_id"]
 			
         },
 		"transactions": [
-			{"label": _("Transactions"), "items": ["Job Order"]},
+			{"label": _("Transactions"), "items": ["Inbound"]},
 						
 		]
     }

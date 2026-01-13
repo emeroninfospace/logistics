@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"rd0O7MNId5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Logistics</span>\",\"col\":12}},{\"id\":\"KfvSt80-FR\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Job Order\",\"col\":5}},{\"id\":\"f4EtSUAIYr\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Outbound\",\"col\":5}},{\"id\":\"cvnNUtVvAJ\",\"type\":\"card\",\"data\":{\"card_name\":\"Logistics\",\"col\":4}},{\"id\":\"XpWl60LcK9\",\"type\":\"card\",\"data\":{\"card_name\":\"Selling\",\"col\":4}},{\"id\":\"VLC-tVvEMN\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}},{\"id\":\"HC9w-MHhxo\",\"type\":\"card\",\"data\":{\"card_name\":\"Report\",\"col\":4}}]",
+ "content": "[{\"id\":\"rd0O7MNId5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Logistics</span>\",\"col\":12}},{\"id\":\"KfvSt80-FR\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Inbound\",\"col\":5}},{\"id\":\"f4EtSUAIYr\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Outbound\",\"col\":5}},{\"id\":\"cvnNUtVvAJ\",\"type\":\"card\",\"data\":{\"card_name\":\"Logistics\",\"col\":4}},{\"id\":\"XpWl60LcK9\",\"type\":\"card\",\"data\":{\"card_name\":\"Selling\",\"col\":4}},{\"id\":\"VLC-tVvEMN\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}},{\"id\":\"HC9w-MHhxo\",\"type\":\"card\",\"data\":{\"card_name\":\"Report\",\"col\":4}}]",
  "creation": "2025-12-22 10:29:18.624908",
  "custom_blocks": [],
  "docstatus": 0,
@@ -154,46 +154,6 @@
    "type": "Link"
   },
   {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Report",
-   "link_count": 3,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Stock Transactions",
-   "link_count": 0,
-   "link_to": "Stock Transactions",
-   "link_type": "Report",
-   "onboard": 1,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "General Ledger",
-   "link_count": 0,
-   "link_to": "General Ledger",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Balance Sheet",
-   "link_count": 0,
-   "link_to": "Balance Sheet",
-   "link_type": "Report",
-   "onboard": 1,
-   "report_ref_doctype": "GL Entry",
-   "type": "Link"
-  },
-  {
    "description": "<h1>Master</h1>",
    "hidden": 0,
    "is_query_report": 0,
@@ -282,15 +242,65 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Report",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Stock Transactions",
+   "link_count": 0,
+   "link_to": "Stock Transactions",
+   "link_type": "Report",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "General Ledger",
+   "link_count": 0,
+   "link_to": "General Ledger",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Balance Sheet",
+   "link_count": 0,
+   "link_to": "Balance Sheet",
+   "link_type": "Report",
+   "onboard": 1,
+   "report_ref_doctype": "GL Entry",
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Inbound Report ",
+   "link_count": 0,
+   "link_to": "Inbound Details",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-01-12 10:59:00.955465",
+ "modified": "2026-01-13 11:53:09.451873",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Logistics",
  "number_cards": [
   {
-   "label": "Job Order",
+   "label": "Inbound",
    "number_card_name": "Job Order"
   },
   {
