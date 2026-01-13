@@ -61,6 +61,7 @@ def make_outbound(order_name):
     si = frappe.new_doc("Outbound")
     si.posting_date = order.posting_date
     si.job_type = order.job_type
+    si.cargo_chanel = order.cargo_chanel
     total_qty = 0
     total_value = 0
     total_gross_wt = 0
@@ -98,6 +99,7 @@ def make_outbound(order_name):
             "item_code": item.item_code,
             "qty": remaining_qty,
             "part_no": item.part_no,
+            "uom":item.uom,
             "unit_price": item.unit_price,
             "hs_code": item.hs_code,
             "unit_wt": item.unit_wt,

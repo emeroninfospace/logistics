@@ -8,11 +8,11 @@
  "field_order": [
   "item_code",
   "part_no",
+  "uom",
   "qty",
   "unit_price",
   "total_value",
   "balance_qty",
-  "material_description",
   "column_break_aaed",
   "hs_code",
   "unit_wt",
@@ -104,11 +104,6 @@
    "label": "Description"
   },
   {
-   "fieldname": "material_description",
-   "fieldtype": "Text Editor",
-   "label": "Material Description"
-  },
-  {
    "fieldname": "cbm",
    "fieldtype": "Float",
    "label": "CBM"
@@ -119,13 +114,19 @@
    "in_list_view": 1,
    "label": "Balance Qty",
    "read_only": 1
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "label": "UOM",
+   "options": "UOM"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-01-12 12:36:41.395091",
+ "modified": "2026-01-13 10:51:43.468760",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Inbound Item",
