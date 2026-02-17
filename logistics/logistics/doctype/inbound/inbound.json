@@ -11,7 +11,7 @@
   "cargo_chanel",
   "customer",
   "supplier",
-  "company",
+  "conversion_rate",
   "column_break_ajnv",
   "posting_date",
   "job_type",
@@ -64,17 +64,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "company",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Company",
-   "options": "Company",
-   "read_only": 1,
-   "remember_last_selected_value": 1
-  },
-  {
    "fieldname": "column_break_ajnv",
    "fieldtype": "Column Break"
   },
@@ -91,7 +80,6 @@
    "fieldtype": "Section Break"
   },
   {
-   "allow_bulk_edit": 1,
    "fieldname": "items",
    "fieldtype": "Table",
    "label": "Items",
@@ -221,13 +209,18 @@
    "label": "Status",
    "options": "\nPending\nPartially\nCompleted",
    "read_only": 1
+  },
+  {
+   "fieldname": "conversion_rate",
+   "fieldtype": "Float",
+   "label": "Conversion Rate"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-13 09:48:37.812757",
+ "modified": "2026-02-17 11:34:31.386965",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Inbound",
