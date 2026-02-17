@@ -248,23 +248,34 @@ app_license = "mit"
 # ignore_translatable_strings_from = []
 
 fixtures = [
-    {
-        "dt": "Custom Field",
-        "filters": [
-            ["name", "in", ["Customer-custom_charge_percentage",
-                            
-                            ]]
-        ]
-    },
-  
     # {
-    #     "dt": "Property Setter",
+    #     "dt": "Custom Field",
     #     "filters": [
-    #         ["name", "in", [
-    #             "Customer-territory-reqd"
-    #         ]]
+    #         ["name", "in", ["Customer-custom_charge_percentage",
+                            
+    #                         ]]
     #     ]
     # },
+  
+    {
+        "dt": "Property Setter",
+        "filters": [
+            ["name", "in", [
+                "Customer-sales_team_tab-hidden",
+                "Customer-accounting_tab-hidden",
+                "Sales Invoice-more_information-hidden",
+                "Sales Invoice-subscription_section-hidden",
+                "Sales Invoice-vat_section-hidden",
+                "Sales Invoice-section_break2-hidden",
+                "Sales Invoice-sales_team_section_break-hidden",
+                "Sales Invoice-more_info-hidden",
+                "Sales Invoice-time_sheet_list-hidden",
+                "Sales Invoice-packing_list-hidden",
+                "Sales Invoice-column_break_55-hidden",
+                "Sales Invoice-items_section-hidden"
+            ]]
+        ]
+    },
   
 
 ]
