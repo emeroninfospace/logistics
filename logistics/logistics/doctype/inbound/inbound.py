@@ -6,7 +6,12 @@ import frappe
 from frappe.model.document import Document
 from frappe import _
 from frappe.utils import flt
-
+from frappe.utils.xlsxutils import build_xlsx_response
+from frappe.utils.xlsxutils import (
+	read_xls_file_from_attached_file,
+	read_xlsx_file_from_attached_file,
+)
+import json
 
 class Inbound(Document):
     def before_save(self):
@@ -43,15 +48,24 @@ class Inbound(Document):
         total_qty = 0
         total_value = 0
         total_gross = 0
-        
+
         for item in self.items:
-            total_qty += item.qty or 0
-            total_gross += item.gross_wt or 0
-            total_value += item.total_value or 0
-        
+            qty = float(item.qty) if item.qty else 0
+            gross = float(item.gross_wt) if item.gross_wt else 0
+            value = float(item.total_value) if item.total_value else 0
+            unit_value = float(item.total_value) / float(item.qty)
+            unit_wt = float(item.gross_wt) / float(item.qty)
+
+            total_qty += qty
+            total_gross += gross
+            total_value += value
+            item.unit_wt = unit_wt
+            item.unit_price = unit_value
+
         self.total_qty = total_qty
         self.total_gross_wt = total_gross
         self.total_value = total_value
+
 
 
 @frappe.whitelist()
@@ -126,3 +140,59 @@ def make_outbound(order_name):
 
     si.insert(ignore_permissions=True)
     return si.name
+
+
+@frappe.whitelist()
+def downlode_file(free_list=None):
+	parent_doc = frappe.get_meta("Inbound Item")
+	label=[]
+	for field in parent_doc.fields:
+		if field and field.fieldtype not in ['Section Break','Column Break'] and field.fieldname!="full_name":
+			label.append(field.fieldname)
+	data = [label]
+	if free_list:
+		free_list = json.loads(free_list)
+		if not free_list:
+			free_list = []
+		for entry in free_list:
+			row = []
+			for header in data[0]:
+				if header in entry:
+					row.append(entry[header])
+				else:
+					row.append("")
+			data.append(row)
+	build_xlsx_response(data, "Inbound")
+
+@frappe.whitelist()
+def upload_file(data,free_list=None):
+	import json
+	if free_list:
+		free_list = json.loads(free_list)
+	data = json.loads(data)
+	if "file_url" not in data: 
+             frappe.throw(_("File URL missing in upload data"))
+
+	df = read_xlsx_file_from_attached_file(file_url=data.get("file_url"))
+	
+	if not df:
+		return [], []
+
+	header = df[0]
+	formatted_data = [dict(zip(header, row)) for row in df[1:] if row and any(row)]
+	
+	cleaned_data = []
+	for row in formatted_data:
+		cleaned_row = {}
+		for key, value in row.items():
+			if is_integer(value):
+				cleaned_row[key] = str(value).strip()
+			else:
+				cleaned_row[key] = value
+		cleaned_data.append(cleaned_row)
+	
+	return cleaned_data, header
+
+def is_integer(value):
+	return isinstance(value, int)
+

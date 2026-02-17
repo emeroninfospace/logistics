@@ -104,13 +104,6 @@ def get_columns():
             "width": 100
         },
         {
-            "label": "Job Order",
-            "fieldname": "reference_id",
-            "fieldtype": "Link",
-            "options": "Job Order",
-            "width": 120
-        },
-        {
             "label": "Outbound",
             "fieldname": "outbound_id",
             "fieldtype": "Link",
