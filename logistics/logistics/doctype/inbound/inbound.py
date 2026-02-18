@@ -61,6 +61,10 @@ class Inbound(Document):
             total_value += value
             item.unit_wt = unit_wt
             item.unit_price = unit_value
+            
+        if self.currency != "AED":
+            base_total_value = total_value * self.conversion_rate
+            self.base_total = base_total_value
 
         self.total_qty = total_qty
         self.total_gross_wt = total_gross
