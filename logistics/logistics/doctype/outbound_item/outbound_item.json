@@ -101,7 +101,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "COO",
-   "options": "Country"
+   "options": "Country List"
   },
   {
    "fieldname": "ref",
@@ -197,7 +197,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-01-12 10:57:56.595580",
+ "modified": "2026-02-18 09:25:43.782204",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Outbound Item",
