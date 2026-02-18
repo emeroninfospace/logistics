@@ -34,34 +34,33 @@ frappe.ui.form.on("Inbound", {
 				});
 			}, __('Create'));
 		}
-		form_render(frm, cdt, cdn)
 	},
-	currency: function (frm) {
-		// this.set_dynamic_labels();
-		let company_currency = frappe.defaults.get_default("currency");
-		// Added `ignore_pricing_rule` to determine if document is loading after mapping from another doc
-		if (frm.doc.currency && frm.doc.currency !== company_currency) {
-			frappe.call({
-				method: "erpnext.setup.utils.get_exchange_rate",
-				args: {
-					transaction_date: frm.doc.posting_date,
-					from_currency: frm.doc.currency,
-					to_currency: company_currency,
-					args: "for_selling",
-				},
-				freeze: true,
-				freeze_message: __("Fetching exchange rates ..."),
-				callback: function (r) {
-					const exchange_rate = flt(r.message);
-					if (exchange_rate != frm.doc.conversion_rate) {
-						frm.set_value("conversion_rate", exchange_rate);
-					}
-				},
-			});
-		} else {
-			frm.trigger("conversion_rate");
-		}
-	},
+     currency: function (frm) {
+ 		// this.set_dynamic_labels();
+ 		let company_currency = "AED";
+ 		// Added `ignore_pricing_rule` to determine if document is loading after mapping from another doc
+ 		if (frm.doc.currency && frm.doc.currency !== company_currency) {
+ 			frappe.call({
+ 				method: "erpnext.setup.utils.get_exchange_rate",
+ 				args: {
+ 					transaction_date: frm.doc.posting_date,
+ 					from_currency: frm.doc.currency,
+ 					to_currency: company_currency,
+ 					args: "for_selling",
+ 				},
+ 				freeze: true,
+ 				freeze_message: __("Fetching exchange rates ..."),
+ 				callback: function (r) {
+ 					const exchange_rate = flt(r.message);
+ 					if (exchange_rate != frm.doc.conversion_rate) {
+ 						frm.set_value("conversion_rate", exchange_rate);
+ 					}
+ 				},
+ 			});
+ 		} else {
+ 			frm.trigger("conversion_rate");
+ 		}
+ 	},
     supplier: function(frm) {
 		if (frm.doc.supplier) {
 			frappe.call({
@@ -147,10 +146,6 @@ frappe.ui.form.on("Inbound", {
 	},
 });
 frappe.ui.form.on("Inbound Item", {
-	form_render(frm, cdt, cdn) {
-        const row = locals[cdt][cdn];
-        frappe.model.set_value(cdt, cdn, "coo", "");
-    },
 	qty: function(frm, cdt, cdn) {
 		calculate_item_total(frm, cdt, cdn);
 	},
@@ -181,6 +176,7 @@ function calculate_totals(frm) {
     let total_qty = 0;
     let total_value = 0;
     let total_gross = 0;
+	let base_total_value = 0;
     
     if (frm.doc.items && frm.doc.items.length > 0) {
         frm.doc.items.forEach(function(item) {
@@ -195,6 +191,11 @@ function calculate_totals(frm) {
             total_gross += item.gross_wt || 0;
             total_value += item.total_value || 0;
         });
+ 		if (frm.doc.currency !== "AED") {
+ 			base_total_value = total_value * frm.doc.conversion_rate;
+ 		} else {
+			base_total_value = total_value;
+		}
         
         frm.refresh_field("items");
     }
@@ -202,6 +203,7 @@ function calculate_totals(frm) {
     frm.set_value("total_qty", total_qty);
     frm.set_value("total_gross_wt", total_gross);
     frm.set_value("total_value", total_value);
+	frm.set_value("base_total", base_total_value);
 }
 
 
