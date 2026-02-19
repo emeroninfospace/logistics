@@ -14,6 +14,8 @@
   "exit_point",
   "on_behalf_of",
   "on_behalf_address",
+  "boe",
+  "document_attach",
   "column_break_jino",
   "posting_date",
   "ship_to",
@@ -224,13 +226,23 @@
    "fieldtype": "Select",
    "label": "Series",
    "options": "ALIZ-.####"
+  },
+  {
+   "fieldname": "boe",
+   "fieldtype": "Data",
+   "label": "BOE "
+  },
+  {
+   "fieldname": "document_attach",
+   "fieldtype": "Attach",
+   "label": "Document Attach"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-17 15:46:22.477672",
+ "modified": "2026-02-18 16:14:00.074703",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Outbound",
