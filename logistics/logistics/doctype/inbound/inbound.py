@@ -16,6 +16,7 @@ import json
 class Inbound(Document):
     def before_save(self):
         self.calculate_totals()
+        self.set_default_uom()
     
     def before_submit(self):
         self.status = "Pending"
@@ -23,7 +24,7 @@ class Inbound(Document):
             logistics_transaction = frappe.get_doc({
                 'doctype': 'Logistics Transaction',
                 'customer': self.customer,
-                'item': item.item_code,
+                'item': item.hs_description if item.hs_description else item.item_code,
                 'hs_code': item.hs_code,
                 'posting_date': self.posting_date,
                 'in_qty': item.qty,
@@ -33,6 +34,10 @@ class Inbound(Document):
                 'order_item': item.name
             })
             logistics_transaction.insert(ignore_permissions=True)
+
+    def set_default_uom(self):
+        for item in self.items:
+            item.uom = self.default_uom
 
     def before_cancel(self):
         logistics_transactions = frappe.get_list(
@@ -127,6 +132,7 @@ def make_outbound(order_name):
             "order_item": item.name,
             "ref": item.ref,
             "description": item.description,
+            "material_description":item.hs_description,
             "boe_no": order.boe_no,
             "total_value": line_value,
         })

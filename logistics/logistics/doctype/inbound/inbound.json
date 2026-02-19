@@ -22,6 +22,7 @@
   "agent",
   "status",
   "amended_from",
+  "default_uom",
   "section_break_nvhm",
   "items",
   "section_break_qmdi",
@@ -224,13 +225,19 @@
    "label": "Total (AED)",
    "options": "Company:company:default_currency",
    "read_only": 1
+  },
+  {
+   "fieldname": "default_uom",
+   "fieldtype": "Link",
+   "label": "Default UOM",
+   "options": "UOM"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-18 11:01:40.693092",
+ "modified": "2026-02-19 13:08:50.170048",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Inbound",
