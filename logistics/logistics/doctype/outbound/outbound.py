@@ -200,7 +200,9 @@ def get_job_order_items(job_order):
             "unit_wt",
             "gross_wt",
             "qty",
-            "unit_price"
+            "unit_price",
+            "hs_description",
+            "uom"
         ]
     )
     

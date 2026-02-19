@@ -276,6 +276,7 @@ function fetch_and_add_items(frm, selected_rows, filters) {
                         let child = frm.add_child('items');
                         child.part_no = item.part_no || '';
                         child.qty = item.balance_qty || 0; 
+                        child.uom = item.uom || '';
                         child.item_code = item.item_code || '';
                         child.unit_price = item.unit_price || 0;
                         child.hs_code = item.hs_code || '';
@@ -284,6 +285,7 @@ function fetch_and_add_items(frm, selected_rows, filters) {
                         child.coo = item.coo || '';
                         child.ref = item.ref || '';
                         child.description = item.description || '';
+                        child.material_description = item.hs_description || '';
                         child.reference_id = item.parent || '';
                         child.boe_no = item.boe_no || '';
                         child.order_item = item.name || '';

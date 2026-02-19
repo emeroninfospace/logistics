@@ -35,6 +35,13 @@ frappe.ui.form.on("Inbound", {
 			}, __('Create'));
 		}
 	},
+	default_uom: function(frm) {
+		frm.doc.items.forEach(function(item) {
+			item.uom = frm.doc.default_uom;
+		});
+		frm.refresh_field("items");
+	},
+		
      currency: function (frm) {
  		// this.set_dynamic_labels();
  		let company_currency = "AED";
