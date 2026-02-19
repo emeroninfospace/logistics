@@ -13,21 +13,19 @@ class Outbound(Document):
 
     def before_submit(self):
         self.create_logistics_transactions()
-        self.update_job_order_status()
         self.validate_boe()
-        try:
-            make_commercial_invoice(self.name)
-        except Exception:
-            frappe.log_error(frappe.get_traceback(), f"make_commercial_invoice failed for {self.name}")
-
+     
     def before_cancel(self):
         self.update_logistics_transactions()
-        self.update_job_order_status()
-        self.update_inbound_item_balance()
         
 
     def on_submit(self):
         self.update_inbound_item_balance()
+        self.update_inbound_status()
+
+    def on_cancel(self):
+        self.update_inbound_item_balance()
+        self.update_inbound_status()
 
     def validate(self):
         self.validate_unit_prices()
@@ -81,7 +79,7 @@ class Outbound(Document):
                 lt_doc.outbound_item = ""
                 lt_doc.save(ignore_permissions=True)
 
-    def update_job_order_status(self):
+    def update_inbound_status(self):
         job_orders = set(item.reference_id for item in self.items if item.reference_id)
         
         for job_order_id in job_orders:
@@ -102,10 +100,6 @@ class Outbound(Document):
                 """, (jo_item.name,), as_dict=1)
                 
                 processed_qty = flt(processed[0].processed_qty) if processed else 0
-                
-                # for current_item in self.items:
-                #     if current_item.order_item == jo_item.name:
-                #         processed_qty += flt(current_item.qty)
                 
                 total_processed_qty += processed_qty
             
@@ -227,6 +221,5 @@ def get_consumed_qty(job_order, item_code):
     """, (job_order, item_code), as_dict=1)
     
     return consumed[0].total_qty if consumed else 0
-
 
 
