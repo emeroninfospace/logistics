@@ -39,7 +39,8 @@
   "total_value",
   "terms_tab",
   "terms",
-  "terms_and_condition"
+  "terms_and_condition",
+  "disable_seal"
  ],
  "fields": [
   {
@@ -239,13 +240,20 @@
    "fieldname": "document_attach",
    "fieldtype": "Attach",
    "label": "Document Attach"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "disable_seal",
+   "fieldtype": "Check",
+   "label": "Disable Seal"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-26 09:28:07.972742",
+ "modified": "2026-03-02 10:45:19.541606",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Outbound",
