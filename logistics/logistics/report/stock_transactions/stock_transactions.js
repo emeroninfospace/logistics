@@ -40,8 +40,8 @@ frappe.query_reports["Stock Transactions"] = {
 		{
 		"fieldname": "reference_id",
 		"fieldtype": "Link",
-		"label": "Job Order",
-		"options": "Job Order"
+		"label": "Inbound",
+		"options": "Inbound"
 		},
 
 	]

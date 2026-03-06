@@ -103,6 +103,13 @@ def get_columns():
             "fieldtype": "Time",
             "width": 100
         },
+         {
+            "label": "Inbound",
+            "fieldname": "reference_id",
+            "fieldtype": "Link",
+            "options": "Inbound",
+            "width": 120
+        },
         {
             "label": "Outbound",
             "fieldname": "outbound_id",

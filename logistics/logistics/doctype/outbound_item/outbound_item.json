@@ -12,6 +12,7 @@
   "qty",
   "unit_price",
   "total_value",
+  "base_total",
   "lpn",
   "material_description",
   "column_break_aaed",
@@ -191,13 +192,20 @@
    "in_list_view": 1,
    "label": "UOM",
    "options": "UOM"
+  },
+  {
+   "depends_on": "eval:doc.currency !== \"AED\"",
+   "fieldname": "base_total",
+   "fieldtype": "Currency",
+   "label": "Total Value(AED)",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-02-18 09:25:43.782204",
+ "modified": "2026-03-06 09:38:18.916404",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Outbound Item",
