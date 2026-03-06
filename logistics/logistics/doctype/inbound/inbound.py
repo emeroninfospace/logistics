@@ -19,6 +19,7 @@ class Inbound(Document):
         self.set_default_uom()
     
     def before_submit(self):
+        self.validate_invoice_no_and_boe()
         self.status = "Pending"
         for item in self.items:
             logistics_transaction = frappe.get_doc({
@@ -74,6 +75,12 @@ class Inbound(Document):
         self.total_qty = total_qty
         self.total_gross_wt = total_gross
         self.total_value = total_value
+
+    def validate_invoice_no_and_boe(self):
+        if not self.ref:
+            frappe.throw(_("Invoice No is required"))
+        if not self.boe_no:
+            frappe.throw(_("BOE No is required"))
 
 
 
