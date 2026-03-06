@@ -85,6 +85,8 @@ def make_outbound(order_name):
     si.posting_date = order.posting_date
     si.job_type = order.job_type
     si.cargo_chanel = order.cargo_chanel
+    si.currency = order.currency
+    si.conversion_rate = order.conversion_rate
     total_qty = 0
     total_value = 0
     total_gross_wt = 0
