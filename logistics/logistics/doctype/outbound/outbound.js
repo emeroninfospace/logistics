@@ -70,7 +70,7 @@ frappe.ui.form.on('Outbound', {
     onload_post_render(frm) {
         if (frm.is_new()) {
             frm.doc.destination = null;
-            frm.doc.exit_point = null;
+            frm.doc.exit_point  = null;
             frm.refresh_field("destination");
             frm.refresh_field("exit_point");
         }
@@ -83,15 +83,14 @@ frappe.ui.form.on('Outbound', {
                 method: "erpnext.setup.utils.get_exchange_rate",
                 args: {
                     transaction_date: frm.doc.posting_date,
-                    from_currency: frm.doc.currency,
-                    to_currency: company_currency,
-                    args: "for_selling",
+                    from_currency:    frm.doc.currency,
+                    to_currency:      company_currency,
+                    args:             "for_selling",
                 },
                 freeze: true,
                 freeze_message: __("Fetching exchange rates ..."),
                 callback: function(r) {
                     frm.set_value("conversion_rate", flt(r.message));
-                    // conversion_rate trigger will fire recalculate_all_rows
                 },
             });
         } else {
@@ -113,50 +112,52 @@ frappe.ui.form.on("Outbound Item", {
     width:      (frm, cdt, cdn) => calculate_cbm(frm, cdt, cdn),
     height:     (frm, cdt, cdn) => calculate_cbm(frm, cdt, cdn),
 });
+
 function calculate_item_total(frm, cdt, cdn) {
-    let row = locals[cdt][cdn];
-    let conversion_rate = flt(frm.doc.conversion_rate) || 1;
+    let row        = locals[cdt][cdn];
     let qty        = flt(row.qty);
     let unit_price = flt(row.unit_price);
+    let total      = qty * unit_price;
 
-    // total_value is in selected currency (e.g. 27 USD)
-    row.total_value = qty * unit_price;
-
-    // base_total is always in AED (e.g. 100 AED)
-    row.base_total = (frm.doc.currency !== "AED")
-        ? row.total_value * conversion_rate
-        : row.total_value;
+    frappe.model.set_value(cdt, cdn, 'total_value', total);
+    frappe.model.set_value(cdt, cdn, 'base_total',  total); // ✅ mirrors total_value
 
     if (flt(row.unit_wt) > 0) {
-        row.gross_wt = flt(row.unit_wt) * qty;
+        frappe.model.set_value(cdt, cdn, 'gross_wt', flt(row.unit_wt) * qty);
     }
 
-    frm.refresh_field("items");
     calculate_totals(frm);
 }
 
-
 function recalculate_all_rows(frm) {
-    let new_rate = flt(frm.doc.conversion_rate) || 1;
+    let new_rate   = flt(frm.doc.conversion_rate) || 1;
+    let old_rate   = flt(previous_conversion_rate) || 1;
+    let is_foreign = frm.doc.currency !== "AED";
 
     (frm.doc.items || []).forEach(item => {
-        let total_value = flt(item.total_value);
+        let qty = flt(item.qty);
 
-        let base_total = flt(item.base_total) > 0
-            ? flt(item.base_total)
-            : total_value * previous_conversion_rate;
+        let unit_price, total_value;
 
-        item.base_total = base_total;
+        if (is_foreign) {
+            // ✅ Reverse unit_price back to AED using OLD rate, then convert to new rate
+            let unit_price_aed = flt(item.unit_price) * old_rate;  // foreign → AED
+            unit_price         = unit_price_aed / new_rate;        // AED → new foreign
+        } else {
+            unit_price = flt(item.unit_price); // AED stays the same
+        }
 
-        item.total_value = (frm.doc.currency !== "AED")
-            ? base_total / new_rate
-            : base_total;
+        total_value = qty * unit_price;
+
+        // ✅ Use frappe.model.set_value so UI updates properly
+        frappe.model.set_value(item.doctype, item.name, 'unit_price',  unit_price);
+        frappe.model.set_value(item.doctype, item.name, 'total_value', total_value);
+        frappe.model.set_value(item.doctype, item.name, 'base_total',  total_value);
     });
 
     frm.refresh_field("items");
     calculate_totals(frm);
 }
-
 
 function calculate_totals(frm) {
     let total_qty      = 0;
@@ -166,17 +167,18 @@ function calculate_totals(frm) {
 
     (frm.doc.items || []).forEach(item => {
         total_qty      += flt(item.qty);
-        total_value    += flt(item.total_value); 
-        total_base     += flt(item.base_total);  
+        total_value    += flt(item.total_value);
+        total_base     += flt(item.base_total);
         total_gross_wt += flt(item.gross_wt);
     });
 
     frm.set_value('total_qty',      total_qty);
-    frm.set_value('total_value',    total_value);  
+    frm.set_value('total_value',    total_value);
     frm.set_value('total_gross_wt', total_gross_wt);
-    frm.set_value('base_total',     total_base);   
+    frm.set_value('base_total',     total_base);
     frm.refresh_fields(['total_qty', 'total_value', 'total_gross_wt', 'base_total']);
 }
+
 function calculate_cbm(frm, cdt, cdn) {
     let row = locals[cdt][cdn];
     let l = flt(row.length);
@@ -188,9 +190,8 @@ function calculate_cbm(frm, cdt, cdn) {
     frm.refresh_field("items");
 }
 
-
 function get_job_orders(frm) {
-    let selected_rows_map = {}; // ✅ Persists selections across searches
+    let selected_rows_map = {};
 
     let dialog = new frappe.ui.Dialog({
         title: __('Select Inbound'),
@@ -303,7 +304,6 @@ function get_job_orders(frm) {
         primary_action_label: __('Get Items'),
         size: 'extra-large',
         primary_action(values) {
-            // ✅ Sync any currently checked rows before submitting
             if (values.job_orders && values.job_orders.length > 0) {
                 values.job_orders.forEach(row => {
                     if (row.__checked === 1) {
@@ -314,7 +314,6 @@ function get_job_orders(frm) {
                 });
             }
 
-            // ✅ Use accumulated selections from all searches
             let selected_job_orders = Object.values(selected_rows_map);
 
             if (selected_job_orders.length === 0) {
@@ -330,7 +329,6 @@ function get_job_orders(frm) {
     dialog.set_df_property('job_orders', 'cannot_add_rows', true);
 
     let refresh_job_orders = function() {
-        // ✅ Sync current table checkboxes into map BEFORE refreshing
         let current_data = dialog.get_value('job_orders') || [];
         current_data.forEach(row => {
             if (row.__checked === 1) {
@@ -362,14 +360,11 @@ function get_job_orders(frm) {
             },
             callback(r) {
                 let data = r.message || [];
-
-                // ✅ Restore checked state for rows that were previously selected
                 data.forEach(row => {
                     if (selected_rows_map[row.name]) {
                         row.__checked = 1;
                     }
                 });
-
                 dialog.set_df_property('job_orders', 'data', data);
                 dialog.refresh();
             }
@@ -387,7 +382,6 @@ function get_job_orders(frm) {
     refresh_job_orders();
 }
 
-
 function fetch_and_add_items(frm, selected_rows, filters) {
     let job_order_names = selected_rows.map(row => row.name);
     console.log('Selected inbound:', job_order_names);
@@ -399,7 +393,10 @@ function fetch_and_add_items(frm, selected_rows, filters) {
             if (r.message && r.message.length > 0) {
                 let added_count        = 0;
                 let zero_balance_count = 0;
-                let conversion_rate    = flt(frm.doc.conversion_rate) || 1;
+
+                let outbound_currency  = frm.doc.currency || "AED";
+                let outbound_conv_rate = flt(frm.doc.conversion_rate) || 1;
+                let is_foreign_outbound = outbound_currency !== "AED";
 
                 r.message.forEach(item => {
                     if (item.balance_qty <= 0) {
@@ -408,14 +405,24 @@ function fetch_and_add_items(frm, selected_rows, filters) {
                     }
 
                     let child = frm.add_child('items');
-                    let qty        = item.balance_qty || 0;
-                    let unit_price = item.unit_price || 0;
+                    let qty   = item.balance_qty || 0;
 
+                    let inbound_conv_rate  = flt(item.inbound_conversion_rate) || 1;
+                    let is_foreign_inbound = (item.inbound_currency || "AED") !== "AED";
+
+                    // Step 1: unit_price → AED
+                    let unit_price_aed = is_foreign_inbound
+                        ? (item.unit_price || 0) * inbound_conv_rate
+                        : (item.unit_price || 0);
+
+                    // Step 2: AED → outbound currency
+                    let unit_price = is_foreign_outbound
+                        ? unit_price_aed / outbound_conv_rate
+                        : unit_price_aed;
+
+                    // total_value & base_total both in outbound currency
                     let total_value = qty * unit_price;
-
-                    let base_total = (frm.doc.currency !== "AED")
-                        ? total_value * conversion_rate
-                        : total_value;
+                    let base_total  = total_value; // ✅ same currency as total_value
 
                     child.part_no              = item.part_no || '';
                     child.qty                  = qty;
