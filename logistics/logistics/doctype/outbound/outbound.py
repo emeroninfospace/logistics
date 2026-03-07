@@ -180,38 +180,33 @@ def get_job_order_items(job_order):
     job_orders = frappe.get_all(
         "Inbound",
         filters={"name": ["in", job_order]},
-        fields=["name", "boe_no"]
+        fields=["name", "boe_no", "currency", "conversion_rate"]  # ✅ fetch currency info
     )
     
-    boe_map = {jo.name: jo.boe_no for jo in job_orders}
+    boe_map      = {jo.name: jo.boe_no         for jo in job_orders}
+    currency_map = {jo.name: jo.currency        for jo in job_orders}  # ✅
+    rate_map     = {jo.name: jo.conversion_rate for jo in job_orders}  # ✅
     
     items = frappe.get_all(
         "Inbound Item",
         filters={"parent": ["in", job_order]},
         fields=[
-            "name",
-            "parent",
-            "item_code",
-            "part_no",
-            "description",
-            "hs_code",
-            "coo",
-            "ref",
-            "unit_wt",
-            "gross_wt",
-            "qty",
-            "unit_price",
-            "hs_description",
-            "uom"
+            "name", "parent", "item_code", "part_no",
+            "description", "hs_code", "coo", "ref",
+            "unit_wt", "gross_wt", "qty", "unit_price",
+            "hs_description", "uom"
         ]
     )
     
     for item in items:
-        item["boe_no"] = boe_map.get(item.parent)
-        item["consumed_qty"] = get_consumed_qty(item.parent, item.item_code)
-        item["balance_qty"] = item["qty"] - item["consumed_qty"]
+        item["boe_no"]          = boe_map.get(item.parent)
+        item["inbound_currency"]        = currency_map.get(item.parent, "AED")  # ✅
+        item["inbound_conversion_rate"] = rate_map.get(item.parent, 1)          # ✅
+        item["consumed_qty"]    = get_consumed_qty(item.parent, item.item_code)
+        item["balance_qty"]     = item["qty"] - item["consumed_qty"]
     
     return items
+
 
 def get_consumed_qty(job_order, item_code):
     consumed = frappe.db.sql("""
@@ -223,5 +218,3 @@ def get_consumed_qty(job_order, item_code):
     """, (job_order, item_code), as_dict=1)
     
     return consumed[0].total_qty if consumed else 0
-
-
