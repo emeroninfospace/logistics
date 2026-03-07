@@ -189,8 +189,8 @@ def upload_file(data,free_list=None):
 	if free_list:
 		free_list = json.loads(free_list)
 	data = json.loads(data)
-	if "file_url" not in data: 
-             frappe.throw(_("File URL missing in upload data"))
+	if "file_url" not in data:
+		frappe.throw(_("File URL missing in upload data"))
 
 	df = read_xlsx_file_from_attached_file(file_url=data.get("file_url"))
 	

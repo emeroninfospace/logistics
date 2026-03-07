@@ -190,6 +190,8 @@ function calculate_cbm(frm, cdt, cdn) {
 
 
 function get_job_orders(frm) {
+    let selected_rows_map = {}; // ✅ Persists selections across searches
+
     let dialog = new frappe.ui.Dialog({
         title: __('Select Inbound'),
         fields: [
@@ -301,18 +303,26 @@ function get_job_orders(frm) {
         primary_action_label: __('Get Items'),
         size: 'extra-large',
         primary_action(values) {
+            // ✅ Sync any currently checked rows before submitting
             if (values.job_orders && values.job_orders.length > 0) {
-                let selected_job_orders = values.job_orders.filter(row => row.__checked === 1);
-
-                if (selected_job_orders.length === 0) {
-                    frappe.show_alert({message: __('Please select at least one inbound'), indicator: 'red'});
-                    return;
-                }
-
-                fetch_and_add_items(frm, selected_job_orders, values);
-            } else {
-                frappe.show_alert({message: __('No inbound available'), indicator: 'red'});
+                values.job_orders.forEach(row => {
+                    if (row.__checked === 1) {
+                        selected_rows_map[row.name] = row;
+                    } else {
+                        delete selected_rows_map[row.name];
+                    }
+                });
             }
+
+            // ✅ Use accumulated selections from all searches
+            let selected_job_orders = Object.values(selected_rows_map);
+
+            if (selected_job_orders.length === 0) {
+                frappe.show_alert({message: __('Please select at least one inbound'), indicator: 'red'});
+                return;
+            }
+
+            fetch_and_add_items(frm, selected_job_orders, values);
             dialog.hide();
         }
     });
@@ -320,6 +330,16 @@ function get_job_orders(frm) {
     dialog.set_df_property('job_orders', 'cannot_add_rows', true);
 
     let refresh_job_orders = function() {
+        // ✅ Sync current table checkboxes into map BEFORE refreshing
+        let current_data = dialog.get_value('job_orders') || [];
+        current_data.forEach(row => {
+            if (row.__checked === 1) {
+                selected_rows_map[row.name] = row;
+            } else {
+                delete selected_rows_map[row.name];
+            }
+        });
+
         let filters = {
             docstatus: 1,
             status: ['in', ['Pending', 'Partially']]
@@ -341,7 +361,16 @@ function get_job_orders(frm) {
                 limit_page_length: 50
             },
             callback(r) {
-                dialog.set_df_property('job_orders', 'data', r.message || []);
+                let data = r.message || [];
+
+                // ✅ Restore checked state for rows that were previously selected
+                data.forEach(row => {
+                    if (selected_rows_map[row.name]) {
+                        row.__checked = 1;
+                    }
+                });
+
+                dialog.set_df_property('job_orders', 'data', data);
                 dialog.refresh();
             }
         });
@@ -369,7 +398,6 @@ function fetch_and_add_items(frm, selected_rows, filters) {
         callback(r) {
             if (r.message && r.message.length > 0) {
                 let added_count        = 0;
-                let duplicate_count    = 0;
                 let zero_balance_count = 0;
                 let conversion_rate    = flt(frm.doc.conversion_rate) || 1;
 
@@ -379,43 +407,34 @@ function fetch_and_add_items(frm, selected_rows, filters) {
                         return;
                     }
 
-                    let item_exists = frm.doc.items.some(existing_item =>
-                        (existing_item.reference_id === item.parent) &&
-                        (existing_item.item_code === item.item_code)
-                    );
+                    let child = frm.add_child('items');
+                    let qty        = item.balance_qty || 0;
+                    let unit_price = item.unit_price || 0;
 
-                    if (!item_exists) {
-                        let child = frm.add_child('items');
-                        let qty        = item.balance_qty || 0;
-                        let unit_price = item.unit_price || 0;
+                    let total_value = qty * unit_price;
 
-                        let total_value = qty * unit_price;
+                    let base_total = (frm.doc.currency !== "AED")
+                        ? total_value * conversion_rate
+                        : total_value;
 
-                        let base_total = (frm.doc.currency !== "AED")
-                            ? total_value * conversion_rate
-                            : total_value;
-
-                        child.part_no              = item.part_no || '';
-                        child.qty                  = qty;
-                        child.uom                  = item.uom || '';
-                        child.item_code            = item.item_code || '';
-                        child.unit_price           = unit_price;
-                        child.total_value          = total_value;
-                        child.base_total           = base_total;
-                        child.hs_code              = item.hs_code || '';
-                        child.unit_wt              = item.unit_wt || 0;
-                        child.gross_wt             = (item.unit_wt * qty) || 0;
-                        child.coo                  = item.coo || '';
-                        child.ref                  = item.ref || '';
-                        child.description          = item.description || '';
-                        child.material_description = item.hs_description || '';
-                        child.reference_id         = item.parent || '';
-                        child.boe_no               = item.boe_no || '';
-                        child.order_item           = item.name || '';
-                        added_count++;
-                    } else {
-                        duplicate_count++;
-                    }
+                    child.part_no              = item.part_no || '';
+                    child.qty                  = qty;
+                    child.uom                  = item.uom || '';
+                    child.item_code            = item.item_code || '';
+                    child.unit_price           = unit_price;
+                    child.total_value          = total_value;
+                    child.base_total           = base_total;
+                    child.hs_code              = item.hs_code || '';
+                    child.unit_wt              = item.unit_wt || 0;
+                    child.gross_wt             = (item.unit_wt * qty) || 0;
+                    child.coo                  = item.coo || '';
+                    child.ref                  = item.ref || '';
+                    child.description          = item.description || '';
+                    child.material_description = item.hs_description || '';
+                    child.reference_id         = item.parent || '';
+                    child.boe_no               = item.boe_no || '';
+                    child.order_item           = item.name || '';
+                    added_count++;
                 });
 
                 frm.refresh_field('items');
@@ -423,7 +442,6 @@ function fetch_and_add_items(frm, selected_rows, filters) {
 
                 let messages = [];
                 if (added_count > 0)        messages.push(`${added_count} items added`);
-                if (duplicate_count > 0)    messages.push(`${duplicate_count} duplicates skipped`);
                 if (zero_balance_count > 0) messages.push(`${zero_balance_count} items fully consumed`);
 
                 if (messages.length > 0) {
