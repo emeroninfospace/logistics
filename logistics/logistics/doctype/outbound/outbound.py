@@ -27,8 +27,8 @@ class Outbound(Document):
         self.update_inbound_item_balance()
         self.update_inbound_status()
 
-    # def validate(self):
-    #     self.validate_unit_prices()
+    def validate(self):
+        self.validate_unit_prices()
 
     def create_logistics_transactions(self):
         for item in self.items:
@@ -115,14 +115,48 @@ class Outbound(Document):
     def validate_unit_prices(self):
         for item in self.items:
             if item.reference_id:
-                job_order_rate = frappe.db.get_value("Inbound Item",item.order_item, "unit_price")
+                inbound_item = frappe.db.get_value(
+                    "Inbound Item",
+                    item.order_item,
+                    ["unit_price", "parent"],
+                    as_dict=1
+                )
+                if not inbound_item:
+                    continue
 
-                if flt(item.unit_price) < flt(job_order_rate):
+                inbound_parent = frappe.db.get_value(
+                    "Inbound",
+                    inbound_item.parent,
+                    ["currency", "conversion_rate"],
+                    as_dict=1
+                )
+
+                inbound_conv_rate  = flt(inbound_parent.conversion_rate) or 1
+                inbound_currency   = inbound_parent.currency or "AED"
+                is_foreign_inbound = inbound_currency != "AED"
+
+                inbound_price_aed = (
+                    flt(inbound_item.unit_price) * inbound_conv_rate
+                    if is_foreign_inbound
+                    else flt(inbound_item.unit_price)
+                )
+
+                outbound_conv_rate  = flt(self.conversion_rate) or 1
+                outbound_currency   = self.currency or "AED"
+                is_foreign_outbound = outbound_currency != "AED"
+
+                outbound_price_aed = (
+                    flt(item.unit_price) * outbound_conv_rate
+                    if is_foreign_outbound
+                    else flt(item.unit_price)
+                )
+
+                if outbound_price_aed < inbound_price_aed:
                     frappe.throw(
                         f"""
                         Rate mismatch for Item <b>{item.item_code}</b><br>
-                        Inbound Rate (<b>{job_order_rate}</b>) is higher than
-                        Outbound Rate (<b>{item.unit_price}</b>).
+                        Inbound Rate (<b>{inbound_price_aed:.4f}</b>) is higher than
+                        Outbound Rate (<b>{outbound_price_aed:.4f}</b>).
                         """
                     )
 
