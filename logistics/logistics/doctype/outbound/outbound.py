@@ -252,3 +252,27 @@ def get_consumed_qty(job_order, item_code):
     """, (job_order, item_code), as_dict=1)
     
     return consumed[0].total_qty if consumed else 0
+
+@frappe.whitelist()
+def get_consolidated_hs_rows(docname):
+    doc = frappe.get_doc("Outbound", docname)
+    consolidated = {}
+
+    for item in doc.items:
+        key = (item.hs_code or "N/A") + "||" + (item.coo or "N/A")
+
+        if key not in consolidated:
+            consolidated[key] = {
+                "hs_code":     item.hs_code or "N/A",
+                "description": item.material_description or item.item_code or "",
+                "coo":         item.coo or "N/A",
+                "qty":         flt(item.qty),
+                "gross_wt":    flt(item.gross_wt),
+                "total_value": flt(item.total_value)
+            }
+        else:
+            consolidated[key]["qty"]         += flt(item.qty)
+            consolidated[key]["gross_wt"]    += flt(item.gross_wt)
+            consolidated[key]["total_value"] += flt(item.total_value)
+
+    return list(consolidated.values())
