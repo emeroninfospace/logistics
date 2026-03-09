@@ -89,7 +89,6 @@ def make_outbound(order_name):
     order = frappe.get_doc("Inbound", order_name)
 
     si = frappe.new_doc("Outbound")
-    si.posting_date = order.posting_date
     si.job_type = order.job_type
     si.cargo_chanel = order.cargo_chanel
     si.currency = order.currency
