@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"rd0O7MNId5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Logistics</span>\",\"col\":12}},{\"id\":\"KfvSt80-FR\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Inbound\",\"col\":5}},{\"id\":\"f4EtSUAIYr\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Outbound\",\"col\":5}},{\"id\":\"cvnNUtVvAJ\",\"type\":\"card\",\"data\":{\"card_name\":\"Logistics\",\"col\":4}},{\"id\":\"XpWl60LcK9\",\"type\":\"card\",\"data\":{\"card_name\":\"Selling\",\"col\":4}},{\"id\":\"VLC-tVvEMN\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}},{\"id\":\"HC9w-MHhxo\",\"type\":\"card\",\"data\":{\"card_name\":\"Report\",\"col\":4}}]",
+ "content": "[{\"id\":\"rd0O7MNId5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Logistics</span>\",\"col\":12}},{\"id\":\"yyGfr9PMm6\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Jafza-Inbound\",\"col\":3}},{\"id\":\"NcNUJ2gzto\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Dubai-inbound\",\"col\":3}},{\"id\":\"KfvSt80-FR\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Inbound\",\"col\":3}},{\"id\":\"f4EtSUAIYr\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Outbound\",\"col\":3}},{\"id\":\"cvnNUtVvAJ\",\"type\":\"card\",\"data\":{\"card_name\":\"Logistics\",\"col\":4}},{\"id\":\"XpWl60LcK9\",\"type\":\"card\",\"data\":{\"card_name\":\"Selling\",\"col\":4}},{\"id\":\"VLC-tVvEMN\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}},{\"id\":\"HC9w-MHhxo\",\"type\":\"card\",\"data\":{\"card_name\":\"Report\",\"col\":4}}]",
  "creation": "2025-12-22 10:29:18.624908",
  "custom_blocks": [],
  "docstatus": 0,
@@ -294,7 +294,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-01-13 15:26:11.618289",
+ "modified": "2026-03-12 10:36:21.090069",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Logistics",
@@ -302,6 +302,14 @@
   {
    "label": "Inbound",
    "number_card_name": "Job Order"
+  },
+  {
+   "label": "Jafza-Inbound",
+   "number_card_name": "Jafza"
+  },
+  {
+   "label": "Dubai-inbound",
+   "number_card_name": "Dubai"
   },
   {
    "label": "Outbound",
