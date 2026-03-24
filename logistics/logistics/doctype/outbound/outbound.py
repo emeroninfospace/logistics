@@ -10,6 +10,12 @@ from frappe.utils import flt
 
 
 class Outbound(Document):
+    def on_trash(self):
+        self.update_inbound_item_balance_on_cancel()
+
+    def on_update(self):
+        self.valaidate_qty()
+        self.update_inbound_item_balance_on_save()
 
     def before_submit(self):
         self.create_logistics_transactions()
@@ -17,6 +23,7 @@ class Outbound(Document):
      
     def before_cancel(self):
         self.update_logistics_transactions()
+        self.update_inbound_item_balance_on_cancel()
         
 
     def on_submit(self):
@@ -29,6 +36,15 @@ class Outbound(Document):
 
     def validate(self):
         self.validate_unit_prices()
+
+    def valaidate_qty(self):
+        for item in self.items:
+            allowed_qty = frappe.db.get_value("Inbound Item", item.order_item, "qty")
+            if item.reference_id:
+                if item.qty > allowed_qty:
+                    frappe.throw(
+                        "Qty for item {0} exceeds allowed qty.".format(item.item_code)
+                    )
 
     def create_logistics_transactions(self):
         for item in self.items:
@@ -194,6 +210,79 @@ class Outbound(Document):
                     f"Item Row {inbound_item_row}: "
                     f"Outbound qty exceeds Inbound qty"
                 )
+
+            frappe.db.set_value(
+                "Inbound Item",
+                inbound_item_row,
+                "balance_qty",
+                balance_qty,
+                update_modified=False
+            )
+
+
+    def update_inbound_item_balance_on_save(self):
+        """Update balance qty on save (before submit) for real-time tracking"""
+        if self.is_new():
+            return
+            
+        inbound_item_rows = set(
+            item.order_item for item in self.items if item.order_item
+        )
+
+        for inbound_item_row in inbound_item_rows:
+
+            inbound_qty = frappe.db.get_value(
+                "Inbound Item",
+                inbound_item_row,
+                "qty"
+            ) or 0
+
+            # For save (not submitted yet), include draft documents
+            issued_qty = frappe.db.sql("""
+                SELECT IFNULL(SUM(oi.qty), 0)
+                FROM `tabOutbound Item` oi
+                INNER JOIN `tabOutbound` o ON o.name = oi.parent
+                WHERE oi.order_item = %s
+                AND o.docstatus >= 0
+            """, inbound_item_row)[0][0]
+
+            balance_qty = flt(inbound_qty) - flt(issued_qty)
+
+            frappe.db.set_value(
+                "Inbound Item",
+                inbound_item_row,
+                "balance_qty",
+                max(0, balance_qty),  # Don't allow negative balance on save
+                update_modified=False
+            )
+
+
+    def update_inbound_item_balance_on_cancel(self):
+        """Update balance qty when outbound is cancelled/deleted"""
+        inbound_item_rows = set(
+            item.order_item for item in self.items if item.order_item
+        )
+
+        for inbound_item_row in inbound_item_rows:
+
+            inbound_qty = frappe.db.get_value(
+                "Inbound Item",
+                inbound_item_row,
+                "qty"
+            ) or 0
+
+            # Exclude this document from calculation (as it's being cancelled)
+            # Include all docs (draft + submitted) except current one
+            issued_qty = frappe.db.sql("""
+                SELECT IFNULL(SUM(oi.qty), 0)
+                FROM `tabOutbound Item` oi
+                INNER JOIN `tabOutbound` o ON o.name = oi.parent
+                WHERE oi.order_item = %s
+                AND o.docstatus >= 0
+                AND o.name != %s
+            """, (inbound_item_row, self.name))[0][0]
+
+            balance_qty = flt(inbound_qty) - flt(issued_qty)
 
             frappe.db.set_value(
                 "Inbound Item",
