@@ -166,7 +166,9 @@ class Outbound(Document):
                     if is_foreign_outbound
                     else flt(item.unit_price)
                 )
-
+                precision = 4
+                inbound_price_aed = flt(inbound_price_aed, precision)
+                outbound_price_aed = flt(outbound_price_aed, precision) 
                 if outbound_price_aed < inbound_price_aed:
                     frappe.throw(
                         f"""
