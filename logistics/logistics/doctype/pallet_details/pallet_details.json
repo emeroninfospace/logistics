@@ -6,63 +6,21 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "lpn",
-  "palletbox",
-  "weight",
-  "length",
-  "width",
-  "height",
-  "cbm"
+  "palletbox"
  ],
  "fields": [
-  {
-   "fieldname": "lpn",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "LPN"
-  },
   {
    "fieldname": "palletbox",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Pallet/Box"
-  },
-  {
-   "fieldname": "weight",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "Weight"
-  },
-  {
-   "fieldname": "length",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "Length"
-  },
-  {
-   "fieldname": "width",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "Width"
-  },
-  {
-   "fieldname": "height",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "Height"
-  },
-  {
-   "fieldname": "cbm",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "CBM"
+   "label": "Pallet/Box details"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-09 11:07:37.844163",
+ "modified": "2026-04-09 11:56:11.606626",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Pallet details",
