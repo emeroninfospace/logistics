@@ -25,6 +25,7 @@
   "boe_no",
   "description",
   "measurements_section",
+  "weight",
   "length",
   "width",
   "column_break_tgqg",
@@ -220,13 +221,18 @@
    "label": "Inbound Unit Price",
    "no_copy": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "weight",
+   "fieldtype": "Float",
+   "label": "Weight"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-03-09 11:42:39.763279",
+ "modified": "2026-04-09 12:07:50.375491",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Outbound Item",
