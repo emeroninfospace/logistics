@@ -41,6 +41,8 @@
   "total_value",
   "section_break_ewyk",
   "details",
+  "total_pallet",
+  "total_package",
   "terms_tab",
   "terms",
   "terms_and_condition",
@@ -274,13 +276,23 @@
    "fieldtype": "Table",
    "label": "Details",
    "options": "Pallet details"
+  },
+  {
+   "fieldname": "total_pallet",
+   "fieldtype": "Data",
+   "label": "Total Pallet"
+  },
+  {
+   "fieldname": "total_package",
+   "fieldtype": "Data",
+   "label": "Total Package"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-09 11:08:30.170330",
+ "modified": "2026-04-09 12:32:13.433560",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Outbound",
