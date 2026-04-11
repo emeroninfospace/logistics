@@ -48,10 +48,10 @@ class Outbound(Document):
 
     def create_logistics_transactions(self):
         for item in self.items:
-            if not item.reference_id:
-                frappe.throw(
-                    "Reference ID is required for all items to create Logistics Transaction."
-                )
+            # if not item.reference_id:
+            #     frappe.throw(
+            #         "Reference ID is required for all items to create Logistics Transaction."
+            #     )
 
             exists = frappe.db.exists(
                 "Logistics Transaction",
