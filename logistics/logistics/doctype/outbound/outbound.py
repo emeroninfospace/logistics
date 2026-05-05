@@ -5,7 +5,8 @@ import frappe
 from frappe.model.document import Document
 import json
 from frappe.model.mapper import get_mapped_doc
-from frappe.utils import flt
+from frappe.utils import flt,cint
+
 
 
 class Outbound(Document):
@@ -179,9 +180,11 @@ class Outbound(Document):
                 )
 
     def validate_boe(self):
-        boe = frappe.db.get_value("Aliz Settings", None, "validate_boe_no")
-        if not boe:
+        boe = frappe.db.get_single_value("Aliz Settings", "validate_boe_no")
+
+        if not cint(boe):
             return
+
         for item in self.items:
             if not item.boe_no:
                 frappe.throw(f"BOE No is required for item {item.item_code}.")
