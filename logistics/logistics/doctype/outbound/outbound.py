@@ -179,6 +179,9 @@ class Outbound(Document):
                 )
 
     def validate_boe(self):
+        boe = frappe.db.get_value("Aliz Settings", None, "validate_boe_no")
+        if not boe:
+            return
         for item in self.items:
             if not item.boe_no:
                 frappe.throw(f"BOE No is required for item {item.item_code}.")
