@@ -14,6 +14,7 @@
   "total_value",
   "base_total",
   "lpn",
+  "reference",
   "material_description",
   "column_break_aaed",
   "hs_code",
@@ -43,8 +44,7 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "Item",
-   "read_only": 1
+   "label": "Item"
   },
   {
    "fieldname": "part_no",
@@ -143,6 +143,7 @@
   {
    "fieldname": "material_description",
    "fieldtype": "Text Editor",
+   "hidden": 1,
    "label": "Material Description"
   },
   {
@@ -226,13 +227,19 @@
    "fieldname": "weight",
    "fieldtype": "Float",
    "label": "Weight"
+  },
+  {
+   "fieldname": "reference",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Reference"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-09 12:07:50.375491",
+ "modified": "2026-05-05 09:43:05.197261",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Outbound Item",
