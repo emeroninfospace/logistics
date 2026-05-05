@@ -130,8 +130,7 @@
   {
    "fieldname": "boe_no",
    "fieldtype": "Data",
-   "label": "BOE No",
-   "read_only": 1
+   "label": "BOE No"
   },
   {
    "fieldname": "order_item",
@@ -239,7 +238,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-05-05 09:43:05.197261",
+ "modified": "2026-05-05 10:15:53.354598",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Outbound Item",
