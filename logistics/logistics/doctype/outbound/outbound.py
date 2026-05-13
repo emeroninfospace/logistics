@@ -33,8 +33,8 @@ class Outbound(Document):
         self.update_inbound_item_balance()
         self.update_inbound_status()
 
-    def validate(self):
-        self.validate_unit_prices()
+    # def validate(self):
+    #     self.validate_unit_prices()
 
     def valaidate_qty(self):
         for item in self.items:
