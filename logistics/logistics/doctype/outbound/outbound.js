@@ -214,7 +214,8 @@ function calculate_cbm(frm, cdt, cdn) {
 }
 
 function get_job_orders(frm) {
-    let selected_rows_map = {};
+    let selected_names = new Set(); // ✅ Store only names, works across all pages
+    let all_fetched_rows = [];      // ✅ Cache all rows from server
 
     let dialog = new frappe.ui.Dialog({
         title: __('Select Inbound'),
@@ -233,7 +234,6 @@ function get_job_orders(frm) {
             },
             {
                 fieldname: 'column_break',
-                label: __(''),
                 fieldtype: 'Column Break'
             },
             {
@@ -250,7 +250,6 @@ function get_job_orders(frm) {
             },
             {
                 fieldname: 'column_break1',
-                label: __(''),
                 fieldtype: 'Column Break'
             },
             {
@@ -266,8 +265,36 @@ function get_job_orders(frm) {
             },
             {
                 fieldname: 'section_break',
-                label: __(''),
                 fieldtype: 'Section Break'
+            },
+            {
+                fieldname: 'selection_toolbar',
+                fieldtype: 'HTML',
+                options: `
+                    <div id="selection_toolbar" style="
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 6px 4px;
+                        margin-bottom: 4px;
+                    ">
+                        <button id="btn_select_all" class="btn btn-sm btn-default" style="font-weight:600;">
+                            ☐ Select All
+                        </button>
+                        <button id="btn_deselect_all" class="btn btn-sm btn-default" style="display:none;">
+                            ☒ Deselect All
+                        </button>
+                        <span id="selected_count" style="
+                            font-weight: 600;
+                            color: #6195ff;
+                            font-size: 13px;
+                        ">Selected: 0</span>
+                        <span id="total_count" style="
+                            color: #888;
+                            font-size: 12px;
+                        "></span>
+                    </div>
+                `
             },
             {
                 fieldname: 'job_orders',
@@ -278,11 +305,19 @@ function get_job_orders(frm) {
                 data: [],
                 fields: [
                     {
+                        fieldname: 'idx',
+                        label: __('#'),
+                        fieldtype: 'Int',
+                        in_list_view: 1,
+                        columns: 1,
+                        read_only: 1
+                    },
+                    {
                         fieldname: 'posting_date',
                         label: __('Date'),
                         fieldtype: 'Date',
                         in_list_view: 1,
-                        width: 100
+                        columns: 2
                     },
                     {
                         fieldname: 'name',
@@ -290,7 +325,7 @@ function get_job_orders(frm) {
                         fieldtype: 'Link',
                         options: 'Inbound',
                         in_list_view: 1,
-                        width: 150
+                        columns: 2
                     },
                     {
                         fieldname: 'customer',
@@ -298,98 +333,190 @@ function get_job_orders(frm) {
                         fieldtype: 'Link',
                         options: 'Customer',
                         in_list_view: 1,
-                        width: 150
+                        columns: 3
                     },
                     {
                         fieldname: 'total_qty',
                         label: __('Total Qty'),
                         fieldtype: 'Float',
                         in_list_view: 1,
-                        width: 100
+                        columns: 2
                     },
                     {
                         fieldname: 'total_value',
                         label: __('Total Value'),
                         fieldtype: 'Currency',
                         in_list_view: 1,
-                        width: 120
+                        columns: 2
                     },
                     {
                         fieldname: 'total_gross_wt',
                         label: __('Total Weight'),
                         fieldtype: 'Float',
                         in_list_view: 1,
-                        width: 120
+                        columns: 2
                     }
                 ]
             }
         ],
         primary_action_label: __('Get Items'),
         size: 'extra-large',
-        primary_action(values) {
-            if (values.job_orders && values.job_orders.length > 0) {
-                values.job_orders.forEach(row => {
-                    if (row.__checked === 1) {
-                        selected_rows_map[row.name] = row;
-                    } else {
-                        delete selected_rows_map[row.name];
-                    }
-                });
-            }
+        primary_action() {
+            // ✅ Sync visible page before submitting
+            sync_visible_page();
 
-            let selected_job_orders = Object.values(selected_rows_map);
-
-            if (selected_job_orders.length === 0) {
+            if (selected_names.size === 0) {
                 frappe.show_alert({message: __('Please select at least one inbound'), indicator: 'red'});
                 return;
             }
 
-            fetch_and_add_items(frm, selected_job_orders, values);
+            // ✅ Build selected rows from cached full list
+            let selected_rows = all_fetched_rows.filter(r => selected_names.has(r.name));
+            fetch_and_add_items(frm, selected_rows, {});
             dialog.hide();
         }
     });
 
     dialog.set_df_property('job_orders', 'cannot_add_rows', true);
 
-    let refresh_job_orders = function() {
-        let current_data = dialog.get_value('job_orders') || [];
-        current_data.forEach(row => {
+    // ── Helpers ────────────────────────────────────────────────────────────────
+
+    function update_ui() {
+        let $count   = dialog.$wrapper.find('#selected_count');
+        let $total   = dialog.$wrapper.find('#total_count');
+        let $sel     = dialog.$wrapper.find('#btn_select_all');
+        let $desel   = dialog.$wrapper.find('#btn_deselect_all');
+        let count    = selected_names.size;
+        let total    = all_fetched_rows.length;
+
+        $count.text(`Selected: ${count}`);
+        $total.text(`of ${total} total`);
+
+        if (count > 0 && count === total) {
+            $sel.hide();
+            $desel.show();
+        } else {
+            $sel.show();
+            $desel.hide();
+        }
+    }
+
+    // Sync checkboxes from the currently visible page into selected_names
+    function sync_visible_page() {
+        let visible = dialog.get_value('job_orders') || [];
+        visible.forEach(row => {
             if (row.__checked === 1) {
-                selected_rows_map[row.name] = row;
+                selected_names.add(row.name);
             } else {
-                delete selected_rows_map[row.name];
+                selected_names.delete(row.name);
             }
         });
+    }
 
-        let filters = {
-            docstatus: 1,
-            status: ['in', ['Pending', 'Partially']]
-        };
+    // Apply selected_names state back onto visible rows
+    function apply_selection_to_visible() {
+        let visible = dialog.get_value('job_orders') || [];
+        visible.forEach(row => {
+            row.__checked = selected_names.has(row.name) ? 1 : 0;
+        });
+        dialog.set_df_property('job_orders', 'data', visible);
+        dialog.fields_dict.job_orders.grid.refresh();
+    }
 
-        if (dialog.get_value('customer'))  filters.customer     = dialog.get_value('customer');
-        if (dialog.get_value('supplier'))  filters.supplier     = dialog.get_value('supplier');
-        if (dialog.get_value('job_type'))  filters.job_type     = dialog.get_value('job_type');
-        if (dialog.get_value('boe_no'))    filters.boe_no       = dialog.get_value('boe_no');
-        if (dialog.get_value('from_date')) filters.posting_date = ['>=', dialog.get_value('from_date')];
-        if (dialog.get_value('to_date'))   filters.posting_date = ['<=', dialog.get_value('to_date')];
+    function get_current_filters() {
+        let filters = [
+            ['docstatus', '=', 1],
+            ['status', 'in', ['Pending', 'Partially']]
+        ];
+        if (dialog.get_value('customer'))  filters.push(['customer',     '=',  dialog.get_value('customer')]);
+        if (dialog.get_value('supplier'))  filters.push(['supplier',     '=',  dialog.get_value('supplier')]);
+        if (dialog.get_value('job_type'))  filters.push(['job_type',     '=',  dialog.get_value('job_type')]);
+        if (dialog.get_value('boe_no'))    filters.push(['boe_no',       '=',  dialog.get_value('boe_no')]);
+        if (dialog.get_value('from_date')) filters.push(['posting_date', '>=', dialog.get_value('from_date')]);
+        if (dialog.get_value('to_date'))   filters.push(['posting_date', '<=', dialog.get_value('to_date')]);
+        return filters;
+    }
+
+    function attach_listeners() {
+        // ✅ Select All — fetches ALL from server with limit 0
+        dialog.$wrapper.find('#btn_select_all').off('click').on('click', function() {
+            frappe.call({
+                method: 'frappe.client.get_list',
+                args: {
+                    doctype: 'Inbound',
+                    fields: ['name'],
+                    filters: get_current_filters(),
+                    limit_page_length: 0   // no limit
+                },
+                callback(r) {
+                    (r.message || []).forEach(row => selected_names.add(row.name));
+                    apply_selection_to_visible();
+                    update_ui();
+                }
+            });
+        });
+
+        // ✅ Deselect All — clears everything
+        dialog.$wrapper.find('#btn_deselect_all').off('click').on('click', function() {
+            selected_names.clear();
+            apply_selection_to_visible();
+            update_ui();
+        });
+
+        // ✅ Per-row checkbox — sync on click
+        dialog.$wrapper.find('.grid-row').off('click.sel').on('click.sel', function() {
+            setTimeout(() => {
+                sync_visible_page();
+                update_ui();
+            }, 80);
+        });
+
+        // ✅ Frappe's own header checkbox (select all on page) — sync after
+        dialog.$wrapper.find('.grid-heading-row input[type="checkbox"]')
+            .off('change.sel').on('change.sel', function() {
+                setTimeout(() => {
+                    sync_visible_page();
+                    update_ui();
+                }, 80);
+            });
+    }
+
+    // ── Main fetch ─────────────────────────────────────────────────────────────
+
+    let refresh_job_orders = function() {
+        // Save visible page before re-fetching
+        sync_visible_page();
 
         frappe.call({
             method: 'frappe.client.get_list',
             args: {
                 doctype: 'Inbound',
                 fields: ['name', 'posting_date', 'customer', 'total_qty', 'total_value', 'total_gross_wt'],
-                filters: filters,
-                limit_page_length: 50
+                filters: get_current_filters(),
+                limit_page_length: 500
             },
             callback(r) {
-                let data = r.message || [];
-                data.forEach(row => {
-                    if (selected_rows_map[row.name]) {
-                        row.__checked = 1;
-                    }
-                });
+                all_fetched_rows = r.message || [];
+
+                // Remove any selected_names no longer in results (filter changed)
+                let valid_names = new Set(all_fetched_rows.map(r => r.name));
+                for (let n of selected_names) {
+                    if (!valid_names.has(n)) selected_names.delete(n);
+                }
+
+                let data = all_fetched_rows.map((row, index) => ({
+                    ...row,
+                    idx: index + 1,
+                    __checked: selected_names.has(row.name) ? 1 : 0
+                }));
+
                 dialog.set_df_property('job_orders', 'data', data);
                 dialog.refresh();
+
+                setTimeout(() => {
+                    attach_listeners();
+                    update_ui();
+                }, 300);
             }
         });
     };
