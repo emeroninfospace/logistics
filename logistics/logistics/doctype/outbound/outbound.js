@@ -118,7 +118,13 @@ frappe.ui.form.on("Outbound Item", {
         calculate_totals(frm);
     },
 });
-function update_base_total_label(frm) {
+frappe.ui.form.on("Pallet details", {
+    length:     (frm, cdt, cdn) => calculate_cbm_pallet(frm, cdt, cdn),
+    width:      (frm, cdt, cdn) => calculate_cbm_pallet(frm, cdt, cdn),
+    height:     (frm, cdt, cdn) => calculate_cbm_pallet(frm, cdt, cdn),
+    
+});
+function update_base_total_label(frm) { 
     let inbound_currency = null;
     (frm.doc.items || []).forEach(item => {
         if (item.inbound_currency && item.inbound_currency !== (frm.doc.currency || "AED")) {
@@ -211,6 +217,16 @@ function calculate_cbm(frm, cdt, cdn) {
         row.cbm = (l / 100) * (w / 100) * (h / 100);
     }
     frm.refresh_field("items");
+}
+function calculate_cbm_pallet(frm, cdt, cdn) {
+    let row = locals[cdt][cdn];
+    let l = flt(row.length);
+    let w = flt(row.width);
+    let h = flt(row.height);
+    if (l > 0 && w > 0 && h > 0) {
+        row.cbm = (l / 100) * (w / 100) * (h / 100);
+    }
+    frm.refresh_field("details");
 }
 
 function get_job_orders(frm) {

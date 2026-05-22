@@ -280,7 +280,7 @@
   {
    "fieldname": "total_pallet",
    "fieldtype": "Data",
-   "label": "Total Pallet"
+   "label": "Total Load Units"
   },
   {
    "fieldname": "total_package",
@@ -292,7 +292,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-09 12:32:13.433560",
+ "modified": "2026-05-22 12:44:35.027937",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Outbound",
