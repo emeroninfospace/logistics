@@ -9,7 +9,8 @@
   "palletbox",
   "height",
   "length",
-  "width"
+  "width",
+  "cbm"
  ],
  "fields": [
   {
@@ -35,13 +36,19 @@
    "fieldtype": "Float",
    "in_list_view": 1,
    "label": "Width"
+  },
+  {
+   "fieldname": "cbm",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "CBM"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-09 12:31:06.764939",
+ "modified": "2026-05-22 12:31:10.175056",
  "modified_by": "Administrator",
  "module": "Logistics",
  "name": "Pallet details",
