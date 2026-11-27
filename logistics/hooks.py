@@ -258,6 +258,10 @@ fixtures = [
     # },
   
     {
+        "dt": "Custom HTML Block",
+        "filters": [["name", "in", ["Logistics Overview"]]]
+    },
+    {
         "dt": "Property Setter",
         "filters": [
             ["name", "in", [
