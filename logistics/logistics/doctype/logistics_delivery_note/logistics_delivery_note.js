@@ -66,7 +66,7 @@ frappe.ui.form.on("Logistics Delivery Note", {
 			method: "frappe.contacts.doctype.address.address.get_address_display",
 			args: { address_dict: frm.doc.ship_to },
 			callback(r) {
-				frm.set_value("ship_to_address", r.message || "");
+				frm.set_value("ship_to_address", html_to_text(r.message));
 			},
 		});
 	},
@@ -94,4 +94,16 @@ function calculate_totals(frm) {
 	});
 	frm.set_value("total_qty", total_qty);
 	frm.set_value("total_weight", flt(total_weight, 2));
+}
+
+// Address display comes back as HTML with <br> tags; keep the field as plain text
+function html_to_text(value) {
+	if (!value) return "";
+	return value
+		.replace(/<br\s*\/?>/gi, "\n")
+		.replace(/<[^>]*>/g, "")
+		.split("\n")
+		.map((line) => line.trim())
+		.filter(Boolean)
+		.join("\n");
 }

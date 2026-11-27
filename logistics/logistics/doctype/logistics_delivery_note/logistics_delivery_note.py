@@ -1,6 +1,8 @@
 # Copyright (c) 2026, Emeron Infospace and contributors
 # For license information, please see license.txt
 
+import re
+
 import frappe
 from frappe import _
 from frappe.model.document import Document
@@ -24,6 +26,9 @@ class LogisticsDeliveryNote(Document):
 		if self.outbound and not self.invoice_no:
 			self.invoice_no = self.outbound
 
+		if self.ship_to_address:
+			self.ship_to_address = html_to_text(self.ship_to_address)
+
 		if self.ship_to and not self.ship_to_name:
 			self.ship_to_name = frappe.db.get_value("Address", self.ship_to, "address_title")
 
@@ -35,6 +40,16 @@ class LogisticsDeliveryNote(Document):
 
 		self.total_qty = flt(total_qty, self.precision("total_qty"))
 		self.total_weight = flt(total_weight, self.precision("total_weight"))
+
+
+def html_to_text(value):
+	"""Turn an HTML address (with <br> tags) into plain text, one line per row."""
+	if not value:
+		return value
+	text = re.sub(r"<br\s*/?>", "\n", value, flags=re.IGNORECASE)
+	text = strip_html(text)
+	lines = [line.strip() for line in text.splitlines()]
+	return "\n".join(line for line in lines if line)
 
 
 def get_company_address(company):
@@ -80,7 +95,7 @@ def get_outbound_details(outbound):
 		"posting_date": doc.posting_date,
 		"ship_to": doc.ship_to,
 		"ship_to_name": frappe.db.get_value("Address", doc.ship_to, "address_title") if doc.ship_to else None,
-		"ship_to_address": doc.ship_to_address,
+		"ship_to_address": html_to_text(doc.ship_to_address),
 		"total_package": doc.total_package,
 		"items": items,
 	}
