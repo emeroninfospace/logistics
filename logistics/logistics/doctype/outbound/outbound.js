@@ -13,6 +13,12 @@ frappe.ui.form.on('Outbound', {
                 get_job_orders(frm);
             });
         }
+
+        if (frm.doc.docstatus == 1) {
+            frm.add_custom_button(__('Delivery Note'), function() {
+                frappe.new_doc('Logistics Delivery Note', { outbound: frm.doc.name });
+            }, __('Create'));
+        }
     },
 
     terms: function(frm) {

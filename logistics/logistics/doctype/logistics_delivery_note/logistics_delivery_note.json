@@ -1,0 +1,249 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-11-27 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_main",
+  "naming_series",
+  "outbound",
+  "invoice_no",
+  "vehicle_no",
+  "column_break_main",
+  "posting_date",
+  "company",
+  "company_address",
+  "amended_from",
+  "ship_to_section",
+  "ship_to",
+  "ship_to_name",
+  "column_break_ship",
+  "ship_to_address",
+  "items_section",
+  "items",
+  "totals_section",
+  "total_qty",
+  "column_break_tot1",
+  "total_weight",
+  "column_break_tot2",
+  "total_package",
+  "received_by_section",
+  "received_by_name",
+  "received_by_contact_no",
+  "column_break_recv",
+  "received_by_vehicle_no"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_main",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "DN-.####",
+   "default": "DN-.####",
+   "reqd": 1,
+   "no_copy": 1,
+   "print_hide": 1
+  },
+  {
+   "fieldname": "outbound",
+   "fieldtype": "Link",
+   "label": "Outbound",
+   "options": "Outbound",
+   "in_standard_filter": 1,
+   "description": "Select an Outbound to fetch Ship To, Items and totals"
+  },
+  {
+   "fieldname": "invoice_no",
+   "fieldtype": "Data",
+   "label": "Invoice No",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "bold": 1
+  },
+  {
+   "fieldname": "vehicle_no",
+   "fieldtype": "Data",
+   "label": "Vehicle No",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "column_break_main",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Date",
+   "default": "Today",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "remember_last_selected_value": 1,
+   "print_hide": 1
+  },
+  {
+   "fieldname": "company_address",
+   "fieldtype": "Link",
+   "label": "Company Address",
+   "options": "Address",
+   "print_hide": 1,
+   "description": "Address printed at the top right of the Delivery Note"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "options": "Logistics Delivery Note",
+   "no_copy": 1,
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "ship_to_section",
+   "fieldtype": "Section Break",
+   "label": "Ship To"
+  },
+  {
+   "fieldname": "ship_to",
+   "fieldtype": "Link",
+   "label": "Ship To",
+   "options": "Address"
+  },
+  {
+   "fieldname": "ship_to_name",
+   "fieldtype": "Data",
+   "label": "Ship To Name",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "column_break_ship",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ship_to_address",
+   "fieldtype": "Small Text",
+   "label": "Ship To Address"
+  },
+  {
+   "fieldname": "items_section",
+   "fieldtype": "Section Break",
+   "label": "Items"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Logistics Delivery Note Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "totals_section",
+   "fieldtype": "Section Break",
+   "label": "Totals"
+  },
+  {
+   "fieldname": "total_qty",
+   "fieldtype": "Float",
+   "label": "Total Quantity",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_tot1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_weight",
+   "fieldtype": "Float",
+   "label": "Total Weight",
+   "read_only": 1,
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_tot2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_package",
+   "fieldtype": "Data",
+   "label": "Total Package",
+   "default": "CTNS"
+  },
+  {
+   "fieldname": "received_by_section",
+   "fieldtype": "Section Break",
+   "label": "Received By",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "received_by_name",
+   "fieldtype": "Data",
+   "label": "Name"
+  },
+  {
+   "fieldname": "received_by_contact_no",
+   "fieldtype": "Data",
+   "label": "Contact No",
+   "options": "Phone"
+  },
+  {
+   "fieldname": "column_break_recv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "received_by_vehicle_no",
+   "fieldtype": "Data",
+   "label": "Vehicle No",
+   "description": "Leave blank to print an empty line for manual entry"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-11-27 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Logistics",
+ "name": "Logistics Delivery Note",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "search_fields": "invoice_no,ship_to_name",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "ship_to_name",
+ "track_changes": 1,
+ "default_print_format": "Logistics Delivery Note"
+}
